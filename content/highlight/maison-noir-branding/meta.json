@@ -1,0 +1,13 @@
+{
+  "title": "Maison Noir Branding",
+  "slug": "maison-noir-branding",
+  "year": "2023",
+  "category": "F&B",
+  "type": "Branding",
+  "description": "Complete brand identity for a Parisian-inspired cocktail bar.",
+  "cover": "assets/cover.jpg",
+  "assets": [
+    { "type": "image", "src": "assets/01.jpg" }
+  ],
+  "highlight": true
+}

@@ -1,0 +1,11 @@
+{
+  "title": "Botanica Brand System",
+  "slug": "botanica-brand-system",
+  "year": "2023",
+  "category": "F&B",
+  "type": "Branding",
+  "description": "Full brand identity for organic café chain Botanica.",
+  "cover": "assets/cover.jpg",
+  "assets": [{ "type": "image", "src": "assets/01.jpg" }],
+  "highlight": false
+}

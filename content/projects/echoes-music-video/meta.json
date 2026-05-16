@@ -1,0 +1,11 @@
+{
+  "title": "Echoes Music Video",
+  "slug": "echoes-music-video",
+  "year": "2023",
+  "category": "Music",
+  "type": "Videography",
+  "description": "Music video direction and cinematography for Echoes.",
+  "cover": "assets/cover.jpg",
+  "assets": [{ "type": "image", "src": "assets/01.jpg" }],
+  "highlight": false
+}

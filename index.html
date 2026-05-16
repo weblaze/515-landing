@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>515 House — Creative Agency</title>
+  <meta name="description" content="515 House. Creative agency. Three people. Photography, film, design, branding, events.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <span class="nav-wordmark">515 House</span>
+    <span class="nav-time" id="nav-time"></span>
+  </nav>
+
+  <!-- Section 01 — Hero -->
+  <section id="hero">
+    <canvas id="hero-canvas"></canvas>
+    <img class="hero-image" src="/hero.jpg" alt="515 House" data-hero-src="/hero.jpg">
+    <div class="hero-center-title halation-text">
+      <h1>515<br>HOUSE</h1>
+    </div>
+    <div class="hero-bottom-left">
+      <span class="hero-tagline">Creative agency. Three people.</span>
+    </div>
+    <div class="hero-bottom-right">
+      <span class="hero-scroll-hint">[ Scroll ]</span>
+    </div>
+  </section>
+
+  <!-- Section 02 — Highlight Projects -->
+  <section id="highlight">
+    <div class="highlight-header">
+      <span class="section-label">[Selected Work]</span>
+    </div>
+    <div class="highlight-grid">
+      <!-- cards injected by JS -->
+    </div>
+  </section>
+
+  <!-- Section 03 — Services -->
+  <section id="services">
+    <div class="services-header">
+      <span class="section-label">[What We Do]</span>
+    </div>
+    <div class="services-columns">
+      <!-- columns injected by JS -->
+    </div>
+  </section>
+
+  <!-- Section 04 — Perks -->
+  <section class="perks-section">
+    <div class="perks-header">
+      <span class="section-label">[Why Us]</span>
+    </div>
+    <div class="perks-cards">
+      <!-- cards injected by JS -->
+    </div>
+  </section>
+
+  <!-- Section 05 — About -->
+  <section id="about" class="about-section">
+    <div class="about-heading-wrap">
+      <span class="about-word-left halation-text">THREE</span>
+      <span class="about-word-right halation-text">PEOPLE</span>
+    </div>
+    <div class="about-photo-wrap">
+      <img class="about-photo" src="/content/team/team.jpg" alt="515 House team">
+    </div>
+    <div class="about-copy-wrap">
+      <p class="about-copy">
+        We're three. We've shot for Ferrari.<br>
+        When a job needs more hands, we know exactly who to call.
+      </p>
+      <div class="about-socials">
+        <a href="https://instagram.com/515house" target="_blank">Instagram</a> ·
+        <a href="#" target="_blank">Behance</a> ·
+        <a href="#" target="_blank">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 06 — All Projects (Masonry) -->
+  <section class="projects-section">
+    <span class="section-label">[All Projects]</span>
+    <div class="masonry-grid">
+      <!-- items injected by JS -->
+    </div>
+    <a href="/projects.html" class="view-all-link">View All Projects →</a>
+  </section>
+
+  <!-- Section 07 — Contact -->
+  <section id="contact" class="contact-section">
+    <div class="contact-inner">
+      <div class="contact-info">
+        <span class="section-label">[Get In Touch]</span>
+        <a class="contact-email" href="mailto:hello@515house.com">hello@515house.com</a>
+        <a class="contact-insta" href="https://instagram.com/515house" target="_blank">@515house</a>
+      </div>
+      <form class="contact-form" id="contact-form">
+        <div class="form-field">
+          <label>Name</label>
+          <input type="text" name="name" autocomplete="off">
+        </div>
+        <div class="form-field">
+          <label>Brand / Company</label>
+          <input type="text" name="brand" autocomplete="off">
+        </div>
+        <div class="form-field">
+          <label>What do you need</label>
+          <textarea name="message" rows="3"></textarea>
+        </div>
+        <button type="submit" class="form-submit">Send it</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Section 08 — Footer -->
+  <footer class="footer">
+    <div class="footer-statement halation-text">
+      <span class="footer-text-a">Made with </span>
+      <span class="footer-media-embed">
+        <img src="/hero.jpg" alt="">
+      </span>
+      <span class="footer-text-b"> in every frame.</span>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-wordmark">515 House</span>
+      <span class="footer-copy">© 2024</span>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "title": "Pulse Festival 2024",
+  "slug": "pulse-festival-2024",
+  "year": "2024",
+  "category": "Events",
+  "type": "Videography",
+  "description": "Three-day music festival. Full coverage from setup to teardown.",
+  "cover": "assets/cover.jpg",
+  "assets": [{ "type": "image", "src": "assets/01.jpg" }],
+  "highlight": false
+}

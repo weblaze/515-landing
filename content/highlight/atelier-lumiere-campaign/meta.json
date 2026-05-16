@@ -1,0 +1,13 @@
+{
+  "title": "Atelier Lumière Campaign",
+  "slug": "atelier-lumiere-campaign",
+  "year": "2024",
+  "category": "Fashion",
+  "type": "Campaign",
+  "description": "SS24 campaign for Atelier Lumière. Studio and location, two-day shoot.",
+  "cover": "assets/cover.jpg",
+  "assets": [
+    { "type": "image", "src": "assets/01.jpg" }
+  ],
+  "highlight": true
+}

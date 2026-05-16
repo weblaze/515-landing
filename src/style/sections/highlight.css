@@ -1,0 +1,121 @@
+/* Highlight Projects Section */
+#highlight {
+  padding: var(--size-section-pad-v) 0;
+}
+
+.highlight-header {
+  padding: 0 var(--size-section-pad-h);
+  margin-bottom: 32px;
+}
+
+.highlight-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 0 var(--size-section-pad-h);
+}
+
+.highlight-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.highlight-card.full {
+  grid-column: 1 / -1;
+}
+
+.highlight-card-media {
+  width: 100%;
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #111;
+  position: relative;
+}
+
+/* Placeholder gradient backgrounds for cards */
+.highlight-card:nth-child(1) .highlight-card-media {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+.highlight-card:nth-child(2) .highlight-card-media {
+  background: linear-gradient(135deg, #2d1b36 0%, #1e1233 50%, #0d0d2b 100%);
+}
+.highlight-card:nth-child(3) .highlight-card-media {
+  background: linear-gradient(135deg, #1a0f0f 0%, #2a1a1a 50%, #3a2020 100%);
+}
+.highlight-card:nth-child(4) .highlight-card-media {
+  background: linear-gradient(135deg, #0f1a1a 0%, #122626 50%, #1a3636 100%);
+}
+
+.highlight-card-media img,
+.highlight-card-media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s var(--ease-out-expo);
+}
+
+.highlight-card:hover .highlight-card-media img,
+.highlight-card:hover .highlight-card-media video {
+  transform: scale(1.03);
+}
+
+/* Placeholder overlay for missing images */
+.highlight-card-media .placeholder-label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: clamp(24px, 3vw, 48px);
+  color: rgba(240, 237, 232, 0.08);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.highlight-card-info {
+  padding: 12px 0 24px;
+}
+
+.highlight-card-tags {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.tag-year, .tag-category {
+  font-family: var(--font-body);
+  font-size: 11px;
+  color: var(--color-gray-dim);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid #2a2a2a;
+  padding: 2px 8px;
+  border-radius: 100px;
+}
+
+.highlight-card-title {
+  font-family: var(--font-display);
+  font-size: clamp(18px, 2vw, 26px);
+  color: var(--color-white);
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.highlight-card-desc {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--color-gray-dim);
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .highlight-grid {
+    grid-template-columns: 1fr;
+  }
+  .highlight-card.full {
+    grid-column: 1;
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "title": "The Grand Meridian",
+  "slug": "the-grand-meridian",
+  "year": "2023",
+  "category": "Hospitality",
+  "type": "Photography",
+  "description": "Luxury hotel brand photography. Architecture and lifestyle.",
+  "cover": "assets/cover.jpg",
+  "assets": [{ "type": "image", "src": "assets/01.jpg" }],
+  "highlight": false
+}

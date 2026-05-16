@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Projects — 515 House</title>
+  <meta name="description" content="All work by 515 House. Photography, film, design, branding, events.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+  <nav class="nav">
+    <span class="nav-wordmark">515 House</span>
+    <span class="nav-time" id="nav-time"></span>
+  </nav>
+
+  <main class="projects-page">
+    <div class="projects-page-header">
+      <a class="back-link" href="/">← Back</a>
+      <h1 class="projects-page-title">All Work</h1>
+    </div>
+    <div class="projects-filters">
+      <div class="filter-group" data-filter="category">
+        <span class="filter-label">Industry</span>
+        <button class="filter-btn active" data-value="all">All</button>
+        <button class="filter-btn" data-value="Automotive">Automotive</button>
+        <button class="filter-btn" data-value="F&B">F&B</button>
+        <button class="filter-btn" data-value="Events">Events</button>
+        <button class="filter-btn" data-value="Hospitality">Hospitality</button>
+        <button class="filter-btn" data-value="Fashion">Fashion</button>
+        <button class="filter-btn" data-value="Music">Music</button>
+        <button class="filter-btn" data-value="Tech">Tech</button>
+      </div>
+      <div class="filter-group" data-filter="type">
+        <span class="filter-label">Type</span>
+        <button class="filter-btn active" data-value="all">All</button>
+        <button class="filter-btn" data-value="Photography">Photography</button>
+        <button class="filter-btn" data-value="Videography">Videography</button>
+        <button class="filter-btn" data-value="Branding">Branding</button>
+        <button class="filter-btn" data-value="UI/UX">UI/UX</button>
+      </div>
+    </div>
+    <div class="projects-list" id="projects-list"></div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-bottom">
+      <span class="footer-wordmark">515 House</span>
+      <span class="footer-copy">© 2024</span>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/projects-page.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "title": "Ferrari Showreel",
+  "slug": "ferrari-showreel",
+  "year": "2024",
+  "category": "Automotive",
+  "type": "Showreel",
+  "description": "Full showreel for Ferrari India. Shot across three cities in 48 hours.",
+  "cover": "assets/cover.jpg",
+  "assets": [
+    { "type": "image", "src": "assets/01.jpg" }
+  ],
+  "highlight": true
+}

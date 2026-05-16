@@ -1,0 +1,11 @@
+{
+  "title": "Velocity Motors Launch",
+  "slug": "velocity-motors-launch",
+  "year": "2024",
+  "category": "Automotive",
+  "type": "Photography",
+  "description": "Product launch photography for Velocity Motors EV lineup.",
+  "cover": "assets/cover.jpg",
+  "assets": [{ "type": "image", "src": "assets/01.jpg" }],
+  "highlight": false
+}

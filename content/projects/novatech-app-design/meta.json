@@ -1,0 +1,11 @@
+{
+  "title": "NovaTech App Design",
+  "slug": "novatech-app-design",
+  "year": "2024",
+  "category": "Tech",
+  "type": "UI/UX",
+  "description": "Product design for NovaTech's flagship mobile application.",
+  "cover": "assets/cover.jpg",
+  "assets": [{ "type": "image", "src": "assets/01.jpg" }],
+  "highlight": false
+}

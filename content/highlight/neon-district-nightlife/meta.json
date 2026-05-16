@@ -1,0 +1,13 @@
+{
+  "title": "Neon District Nightlife",
+  "slug": "neon-district-nightlife",
+  "year": "2024",
+  "category": "Events",
+  "type": "Aftermovie",
+  "description": "Aftermovie for the Neon District festival. 12,000 attendees, one camera crew.",
+  "cover": "assets/cover.jpg",
+  "assets": [
+    { "type": "image", "src": "assets/01.jpg" }
+  ],
+  "highlight": true
+}

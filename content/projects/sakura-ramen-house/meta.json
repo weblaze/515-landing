@@ -1,0 +1,11 @@
+{
+  "title": "Sakura Ramen House",
+  "slug": "sakura-ramen-house",
+  "year": "2023",
+  "category": "F&B",
+  "type": "Photography",
+  "description": "Menu and ambiance photography for Sakura Ramen House.",
+  "cover": "assets/cover.jpg",
+  "assets": [{ "type": "image", "src": "assets/01.jpg" }],
+  "highlight": false
+}
