@@ -45,7 +45,7 @@ export function initHeroWebGL() {
   // --- TRAIL ARRAY SETUP ---
   const MAX_POINTS = 100;
   // Each point is [x, y, age]
-  const trail = new Float32Array(MAX_POINTS * 3);
+  const trail = new Array(MAX_POINTS * 3).fill(0);
   const MAX_AGE = 6.0; // 6 seconds to die out entirely
 
   for (let i = 0; i < MAX_POINTS * 3; i += 3) {
@@ -224,8 +224,8 @@ export function initHeroWebGL() {
         }
     }
 
-    // Force OGL to upload the new array data to the GPU by passing a new reference
-    program.uniforms.uTrail.value = new Float32Array(trail);
+    // Force OGL to upload the new array data to the GPU by passing a new standard Array reference
+    program.uniforms.uTrail.value = trail.slice(0);
     
     renderer.render({ scene: mesh })
   }
