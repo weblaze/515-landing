@@ -34,6 +34,11 @@ export function initPerks() {
 
   // Build cards
   perks.forEach((perk, i) => {
+    const wrapperDiv = document.createElement('div')
+    wrapperDiv.className = 'perk-card-wrapper'
+    // Ensure the wrapper preserves layout when the card inside becomes position: fixed
+    wrapperDiv.style.position = 'relative'
+
     const card = document.createElement('div')
     if (perk.type === 'cta') {
       card.className = 'perk-card perk-card-cta'
@@ -46,88 +51,116 @@ export function initPerks() {
         <p class="perk-body">${perk.body}</p>
       `
     }
-    wrapper.appendChild(card)
+    wrapperDiv.appendChild(card)
+    wrapper.appendChild(wrapperDiv)
   })
 
-  // GSAP ScrollTrigger stacking — content cards
-  const contentCards = gsap.utils.toArray('.perk-card:not(.perk-card-cta)')
-  const ctaCard = document.querySelector('.perk-card-cta')
+  const allCards = gsap.utils.toArray('.perk-card')
+  if (allCards.length === 0) return
 
-  contentCards.forEach((card, i) => {
-    ScrollTrigger.create({
-      trigger: card,
-      start: `top ${80 - i * 4}px`,
-      pin: true,
-      pinSpacing: false,
-      endTrigger: '.perks-section',
-      end: 'bottom bottom'
-    })
+  const totalCards = allCards.length
+  const offsetStep = 40 // 40px exposed top edge per card
+  const maxOffset = (totalCards - 1) * offsetStep
 
-    gsap.to(card, {
-      scale: 1 - (contentCards.length - 1 - i) * 0.02,
-      scrollTrigger: {
-        trigger: card,
-        start: 'top top',
-        scrub: true
-      }
-    })
-  })
+  // Set up the container for absolute positioning stacking
+  wrapper.style.position = 'relative'
+  // Calculate total height needed. Cards are ~300px min-height. Let's force them to overlap at bottom.
+  // The easiest way is to let GSAP handle the initial layout, but to stack them we can just set them absolute.
+  const cardHeight = allCards[0].offsetHeight || 300
+  wrapper.style.height = `${cardHeight + maxOffset}px`
 
-  // CTA card — scrolls up, covers the deck, holds pinned with spacing
-  if (ctaCard) {
-    ScrollTrigger.create({
-      trigger: ctaCard,
-      start: `top ${80 - contentCards.length * 4}px`,
-      pin: true,
-      pinSpacing: true,
-      endTrigger: '.perks-section',
-      end: 'bottom bottom'
-    })
-  }
-
-  // CTA hover — smooth slide from right-aligned to centered using GSAP x transform
-  const ctaText = ctaCard?.querySelector('.perk-cta-text')
-  if (!ctaCard || !ctaText) return
-
-  // The text starts right-aligned via CSS. On hover, we compute the distance
-  // to center and tween it smoothly.
-  ctaCard.addEventListener('mouseenter', () => {
-    const cardWidth = ctaCard.clientWidth
-    const textWidth = ctaText.offsetWidth
-    const padding = 56
-    // Text is right-aligned at: cardWidth - padding - textWidth (left edge)
-    // Center position left edge: (cardWidth - textWidth) / 2
-    // Offset needed: center - right = (cardWidth - textWidth)/2 - (cardWidth - padding - textWidth)
-    // = (cardWidth - textWidth)/2 - cardWidth + padding + textWidth
-    // = -cardWidth/2 + textWidth/2 + padding + textWidth
-    // Simplified: we just move it left by the difference
-    const rightPos = cardWidth - padding - textWidth
-    const centerPos = (cardWidth - textWidth) / 2
-    const offset = centerPos - rightPos
-
-    gsap.to(ctaText, {
-      x: offset,
-      duration: 0.8,
-      ease: 'power3.out'
-    })
-  })
-
-  ctaCard.addEventListener('mouseleave', () => {
-    gsap.to(ctaText, {
-      x: 0,
-      duration: 0.8,
-      ease: 'power3.out'
-    })
-  })
-
-  ctaCard.addEventListener('click', () => {
-    const contact = document.getElementById('contact')
-    if (contact) {
-      gsap.to(window, {
-        scrollTo: { y: contact, offsetY: 56 },
-        duration: 1.2,
-        ease: 'power4.inOut'
-      })
+  allCards.forEach((card, i) => {
+    card.style.position = 'absolute'
+    card.style.top = '0'
+    card.style.left = '0'
+    card.style.width = '100%'
+    card.style.zIndex = i
+    // Initial position: Card 0 is at 0, Card 1 is at 100vh (offscreen bottom), etc.
+    if (i > 0) {
+      gsap.set(card, { y: window.innerHeight })
     }
   })
+
+  // We pin the wrapper. We scrub an animation that slides them up.
+  // How long to scrub? 100vh per card, plus a pack duration.
+  const scrollPerCard = window.innerHeight * 0.8
+  const packDuration = 600
+  const totalScroll = (totalCards - 1) * scrollPerCard + packDuration
+
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: wrapper,
+      start: 'center center', // Pin when Card 0 is exactly in center
+      end: `+=${totalScroll}`,
+      pin: true,
+      scrub: 1,
+      anticipatePin: 1
+    }
+  })
+
+  // 1. Stacking Phase
+  // Slide each card up from window.innerHeight to its stacked position (i * offsetStep)
+  for (let i = 1; i < totalCards; i++) {
+    tl.to(allCards[i], {
+      y: i * offsetStep,
+      duration: scrollPerCard,
+      ease: 'none'
+    }, (i - 1) * scrollPerCard) // Start when previous card finishes
+  }
+
+  // 2. Packing Phase
+  // After all cards are stacked, move Card 0...N-1 down to hide behind the CTA card
+  const packStartTime = (totalCards - 1) * scrollPerCard
+  allCards.forEach((card, i) => {
+    if (i === totalCards - 1) return // Skip CTA
+    const currentOffset = i * offsetStep
+    const distToMove = maxOffset - currentOffset
+
+    tl.to(card, {
+      y: `+=${distToMove}`,
+      opacity: 0,
+      scale: 0.96,
+      duration: packDuration,
+      ease: 'power2.inOut'
+    }, packStartTime)
+  })
+
+  // CTA hover — smooth slide from right-aligned to centered
+  const ctaCard = allCards[totalCards - 1]
+  const ctaText = ctaCard?.querySelector('.perk-cta-text')
+  if (ctaCard && ctaText) {
+    ctaCard.addEventListener('mouseenter', () => {
+      const cardWidth = ctaCard.clientWidth
+      const textWidth = ctaText.offsetWidth
+      const padding = 56
+      const rightPos = cardWidth - padding - textWidth
+      const centerPos = (cardWidth - textWidth) / 2
+      const offset = centerPos - rightPos
+
+      gsap.to(ctaText, {
+        x: offset,
+        duration: 0.8,
+        ease: 'power3.out'
+      })
+    })
+
+    ctaCard.addEventListener('mouseleave', () => {
+      gsap.to(ctaText, {
+        x: 0,
+        duration: 0.8,
+        ease: 'power3.out'
+      })
+    })
+
+    ctaCard.addEventListener('click', () => {
+      const contact = document.getElementById('contact')
+      if (contact) {
+        gsap.to(window, {
+          scrollTo: { y: contact, offsetY: 56 },
+          duration: 1.2,
+          ease: 'power4.inOut'
+        })
+      }
+    })
+  }
 }
