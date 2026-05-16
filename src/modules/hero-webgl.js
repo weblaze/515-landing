@@ -180,7 +180,7 @@ export function initHeroWebGL() {
 
     // Fade out the hidden canvas very slowly
     ctx.globalCompositeOperation = 'source-over';
-    ctx.fillStyle = \`rgba(0, 0, 0, \${1.0 - CONFIG.decay})\`;
+    ctx.fillStyle = `rgba(0, 0, 0, ${1.0 - CONFIG.decay})`;
     ctx.fillRect(0, 0, dispCanvas.width, dispCanvas.height);
 
     if (inHero) {
@@ -200,7 +200,7 @@ export function initHeroWebGL() {
                     px, py, 0,
                     px, py, radius
                 );
-                gradient.addColorStop(0, \`rgba(255, 255, 255, \${CONFIG.brushStrength})\`);
+                gradient.addColorStop(0, `rgba(255, 255, 255, ${CONFIG.brushStrength})`);
                 gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
                 // Use 'lighten' to merge drops without building up an unnatural flat plateau
