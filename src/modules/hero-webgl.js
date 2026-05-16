@@ -224,7 +224,8 @@ export function initHeroWebGL() {
         }
     }
 
-    program.uniforms.uTrail.value = trail;
+    // Force OGL to upload the new array data to the GPU by passing a new reference
+    program.uniforms.uTrail.value = new Float32Array(trail);
     
     renderer.render({ scene: mesh })
   }
