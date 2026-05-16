@@ -7,11 +7,11 @@ export const highlightProjects = [
     "category": "Fashion",
     "type": "Campaign",
     "description": "SS24 campaign for Atelier Lumière. Studio and location, two-day shoot.",
-    "cover": "/content/highlight/atelier-lumiere-campaign/assets/cover.jpg",
+    "cover": "/content/highlight/atelier-lumiere-campaign/assets/cover.webp",
     "assets": [
       {
         "type": "image",
-        "src": "/content/highlight/atelier-lumiere-campaign/assets/01.jpg"
+        "src": "/content/highlight/atelier-lumiere-campaign/assets/01.webp"
       }
     ],
     "highlight": true
@@ -23,11 +23,11 @@ export const highlightProjects = [
     "category": "Automotive",
     "type": "Showreel",
     "description": "Full showreel for Ferrari India. Shot across three cities in 48 hours.",
-    "cover": "/content/highlight/ferrari-showreel/assets/cover.jpg",
+    "cover": "/content/highlight/ferrari-showreel/assets/cover.webp",
     "assets": [
       {
         "type": "image",
-        "src": "/content/highlight/ferrari-showreel/assets/01.jpg"
+        "src": "/content/highlight/ferrari-showreel/assets/01.webp"
       }
     ],
     "highlight": true
@@ -39,11 +39,11 @@ export const highlightProjects = [
     "category": "F&B",
     "type": "Branding",
     "description": "Complete brand identity for a Parisian-inspired cocktail bar.",
-    "cover": "/content/highlight/maison-noir-branding/assets/cover.jpg",
+    "cover": "/content/highlight/maison-noir-branding/assets/cover.webp",
     "assets": [
       {
         "type": "image",
-        "src": "/content/highlight/maison-noir-branding/assets/01.jpg"
+        "src": "/content/highlight/maison-noir-branding/assets/01.webp"
       }
     ],
     "highlight": true
@@ -55,11 +55,11 @@ export const highlightProjects = [
     "category": "Events",
     "type": "Aftermovie",
     "description": "Aftermovie for the Neon District festival. 12,000 attendees, one camera crew.",
-    "cover": "/content/highlight/neon-district-nightlife/assets/cover.jpg",
+    "cover": "/content/highlight/neon-district-nightlife/assets/cover.webp",
     "assets": [
       {
         "type": "image",
-        "src": "/content/highlight/neon-district-nightlife/assets/01.jpg"
+        "src": "/content/highlight/neon-district-nightlife/assets/01.webp"
       }
     ],
     "highlight": true
@@ -73,11 +73,11 @@ export const allProjects = [
     "category": "F&B",
     "type": "Branding",
     "description": "Full brand identity for organic café chain Botanica.",
-    "cover": "/content/projects/botanica-brand-system/assets/cover.jpg",
+    "cover": "/content/projects/botanica-brand-system/assets/cover.webp",
     "assets": [
       {
         "type": "image",
-        "src": "/content/projects/botanica-brand-system/assets/01.jpg"
+        "src": "/content/projects/botanica-brand-system/assets/01.webp"
       }
     ],
     "highlight": false
@@ -89,11 +89,11 @@ export const allProjects = [
     "category": "Music",
     "type": "Videography",
     "description": "Music video direction and cinematography for Echoes.",
-    "cover": "/content/projects/echoes-music-video/assets/cover.jpg",
+    "cover": "/content/projects/echoes-music-video/assets/cover.webp",
     "assets": [
       {
         "type": "image",
-        "src": "/content/projects/echoes-music-video/assets/01.jpg"
+        "src": "/content/projects/echoes-music-video/assets/01.webp"
       }
     ],
     "highlight": false
@@ -105,11 +105,11 @@ export const allProjects = [
     "category": "Tech",
     "type": "UI/UX",
     "description": "Product design for NovaTech's flagship mobile application.",
-    "cover": "/content/projects/novatech-app-design/assets/cover.jpg",
+    "cover": "/content/projects/novatech-app-design/assets/cover.webp",
     "assets": [
       {
         "type": "image",
-        "src": "/content/projects/novatech-app-design/assets/01.jpg"
+        "src": "/content/projects/novatech-app-design/assets/01.webp"
       }
     ],
     "highlight": false
@@ -121,11 +121,11 @@ export const allProjects = [
     "category": "Events",
     "type": "Videography",
     "description": "Three-day music festival. Full coverage from setup to teardown.",
-    "cover": "/content/projects/pulse-festival-2024/assets/cover.jpg",
+    "cover": "/content/projects/pulse-festival-2024/assets/cover.webp",
     "assets": [
       {
         "type": "image",
-        "src": "/content/projects/pulse-festival-2024/assets/01.jpg"
+        "src": "/content/projects/pulse-festival-2024/assets/01.webp"
       }
     ],
     "highlight": false
@@ -137,11 +137,11 @@ export const allProjects = [
     "category": "F&B",
     "type": "Photography",
     "description": "Menu and ambiance photography for Sakura Ramen House.",
-    "cover": "/content/projects/sakura-ramen-house/assets/cover.jpg",
+    "cover": "/content/projects/sakura-ramen-house/assets/cover.webp",
     "assets": [
       {
         "type": "image",
-        "src": "/content/projects/sakura-ramen-house/assets/01.jpg"
+        "src": "/content/projects/sakura-ramen-house/assets/01.webp"
       }
     ],
     "highlight": false
@@ -153,11 +153,11 @@ export const allProjects = [
     "category": "Events",
     "type": "Photography",
     "description": "Corporate conference documentation. Keynotes, panels, networking.",
-    "cover": "/content/projects/summit-conference-2024/assets/cover.jpg",
+    "cover": "/content/projects/summit-conference-2024/assets/cover.webp",
     "assets": [
       {
         "type": "image",
-        "src": "/content/projects/summit-conference-2024/assets/01.jpg"
+        "src": "/content/projects/summit-conference-2024/assets/01.webp"
       }
     ],
     "highlight": false
@@ -169,11 +169,11 @@ export const allProjects = [
     "category": "Hospitality",
     "type": "Photography",
     "description": "Luxury hotel brand photography. Architecture and lifestyle.",
-    "cover": "/content/projects/the-grand-meridian/assets/cover.jpg",
+    "cover": "/content/projects/the-grand-meridian/assets/cover.webp",
     "assets": [
       {
         "type": "image",
-        "src": "/content/projects/the-grand-meridian/assets/01.jpg"
+        "src": "/content/projects/the-grand-meridian/assets/01.webp"
       }
     ],
     "highlight": false
@@ -185,11 +185,11 @@ export const allProjects = [
     "category": "Automotive",
     "type": "Photography",
     "description": "Product launch photography for Velocity Motors EV lineup.",
-    "cover": "/content/projects/velocity-motors-launch/assets/cover.jpg",
+    "cover": "/content/projects/velocity-motors-launch/assets/cover.webp",
     "assets": [
       {
         "type": "image",
-        "src": "/content/projects/velocity-motors-launch/assets/01.jpg"
+        "src": "/content/projects/velocity-motors-launch/assets/01.webp"
       }
     ],
     "highlight": false
@@ -201,11 +201,11 @@ export const allProjects = [
     "category": "Fashion",
     "type": "Photography",
     "description": "Editorial spread for Vogue Noir. Studio shoot, monochrome.",
-    "cover": "/content/projects/vogue-noir-editorial/assets/cover.jpg",
+    "cover": "/content/projects/vogue-noir-editorial/assets/cover.webp",
     "assets": [
       {
         "type": "image",
-        "src": "/content/projects/vogue-noir-editorial/assets/01.jpg"
+        "src": "/content/projects/vogue-noir-editorial/assets/01.webp"
       }
     ],
     "highlight": false

@@ -176,13 +176,12 @@ export function initHeroWebGL() {
     // Update Time
     time += dt
 
-    // Smoothly lerp current mouse towards target mouse
-    currentMouse.x += (targetMouse.x - currentMouse.x) * 0.15;
-    currentMouse.y += (targetMouse.y - currentMouse.y) * 0.15;
+    // Smoothly lerp current mouse towards target mouse to create a slow trailing effect
+    currentMouse.x += (targetMouse.x - currentMouse.x) * 0.02;
+    currentMouse.y += (targetMouse.y - currentMouse.y) * 0.02;
 
-    // Linearly reduce decay to 0 over ~800ms
-    // If dt is ~0.016 (60fps), subtracting 0.016 / 0.8 = 0.02 per frame
-    decay = Math.max(0.0, decay - (dt / 0.8));
+    // Linearly reduce decay to 0 over 5 seconds so it dies out very slowly
+    decay = Math.max(0.0, decay - (dt / 5.0));
 
     // Update Uniforms
     program.uniforms.uMouse.value = [currentMouse.x, currentMouse.y];

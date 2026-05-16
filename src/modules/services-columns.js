@@ -3,31 +3,31 @@ const services = [
     id: 'photo-film',
     label: 'Film',
     description: 'Stills and motion. Editorial, commercial, events. We make your subject look like it belongs on a billboard.',
-    image: '/content/services/photo.jpg'
+    image: '/content/services/photo.webp'
   },
   {
     id: 'design-brand',
     label: 'Design',
     description: 'Identity systems, print, digital. From logo to full brand guideline — consistent, sharp, memorable.',
-    image: '/content/services/design.jpg'
+    image: '/content/services/design.webp'
   },
   {
     id: 'events',
     label: 'Events',
     description: 'Concert coverage, venue documentation, recap films. We capture the energy, not just the stage.',
-    image: '/content/services/events.jpg'
+    image: '/content/services/events.webp'
   },
   {
     id: 'fnb-hosp',
     label: 'Food',
     description: 'Menu shoots, ambiance, brand story. We make your space look as good as it feels.',
-    image: '/content/services/fnb.jpg'
+    image: '/content/services/fnb.webp'
   },
   {
     id: 'uiux',
     label: 'Digital',
     description: 'Product design, interfaces, web. Digital experiences that feel intuitive and look premium.',
-    image: '/content/services/uiux.jpg'
+    image: '/content/services/uiux.webp'
   }
 ]
 
