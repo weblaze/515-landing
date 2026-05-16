@@ -1,5 +1,12 @@
 import { Renderer, Program, Mesh, Triangle, Texture } from 'ogl'
 
+const CONFIG = {
+  brushSize: 0.03,       // Smaller radius for the drops
+  brushStrength: 0.6,    // Height of the liquid drops
+  decay: 0.995,          // extremely slow fade out (leaves a long trail)
+  distortionScale: 0.1   // Magnification bulge amount
+};
+
 export function initHeroWebGL() {
   const canvas = document.getElementById('hero-canvas')
   if (!canvas) return
@@ -16,7 +23,23 @@ export function initHeroWebGL() {
   const gl = renderer.gl
   gl.clearColor(0, 0, 0, 1)
 
-  // Single Main Image Texture (No Ping-Pong Buffers Needed)
+  // 1. Setup Hidden 2D Canvas (The Displacement Height Map)
+  const dispCanvas = document.createElement('canvas');
+  dispCanvas.width = window.innerWidth;
+  dispCanvas.height = window.innerHeight;
+  const ctx = dispCanvas.getContext('2d', { willReadFrequently: true });
+  
+  ctx.fillStyle = 'black';
+  ctx.fillRect(0, 0, dispCanvas.width, dispCanvas.height);
+
+  const dispTexture = new Texture(gl, {
+    image: dispCanvas,
+    generateMipmaps: false,
+    minFilter: gl.LINEAR,
+    magFilter: gl.LINEAR
+  });
+
+  // 2. Main Image Texture
   const mainTexture = new Texture(gl, {
     generateMipmaps: false,
     minFilter: gl.LINEAR,
@@ -42,37 +65,30 @@ export function initHeroWebGL() {
   }
   img.src = heroImgEl?.getAttribute('src') || '/hero.webp'
 
-  // Mouse Tracking State
-  let targetMouse = { x: 0.5, y: 0.5 };
-  let currentMouse = { x: 0.5, y: 0.5 };
-  let decay = 0.0;
-  let time = 0.0;
+  // 3. Mouse Tracking
+  let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+  let prevMouse = { x: mouse.x, y: mouse.y };
   let inHero = false;
 
   const heroEl = document.getElementById('hero')
 
   heroEl.addEventListener('mousemove', (e) => {
     const rect = heroEl.getBoundingClientRect();
-    // OGL vUv is (0,0) at bottom-left, (1,1) at top-right
-    targetMouse.x = (e.clientX - rect.left) / rect.width;
-    targetMouse.y = 1.0 - ((e.clientY - rect.top) / rect.height);
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
     
-    // If just entered, snap current to target to avoid sweeping from center
     if (!inHero) {
-        currentMouse.x = targetMouse.x;
-        currentMouse.y = targetMouse.y;
+        prevMouse.x = mouse.x;
+        prevMouse.y = mouse.y;
         inHero = true;
     }
-    
-    // Reset decay to full strength on movement
-    decay = 1.0; 
   });
   
   heroEl.addEventListener('mouseleave', () => {
     inHero = false;
   });
 
-  // Shader Setup - Single Pass Spherical Barrel Distortion
+  // 4. Shader Setup
   const vertex = `
     attribute vec2 uv;
     attribute vec3 position;
@@ -86,14 +102,13 @@ export function initHeroWebGL() {
   const fragment = `
     precision highp float;
     uniform sampler2D uTexture;
-    uniform vec2 uMouse;
-    uniform float uDecay;
-    uniform float uTime;
+    uniform sampler2D uDispMap;
+    uniform float uDistortionScale;
     uniform vec2 uResolution;
+    uniform vec2 uTexel;
     uniform float uImageAspect;
     varying vec2 vUv;
 
-    // Cover-fit UV mapping
     vec2 coverUv(vec2 uv, vec2 res, float imgAspect) {
       float screenAspect = res.x / res.y;
       vec2 s = vec2(1.0);
@@ -108,37 +123,31 @@ export function initHeroWebGL() {
     void main() {
       vec2 baseUv = coverUv(vUv, uResolution, uImageAspect);
       
-      // Aspect-corrected distance calculation so the ripple is a perfect circle
-      vec2 aspect = vec2(uResolution.x / uResolution.y, 1.0);
-      vec2 uvAspect = vUv * aspect;
-      vec2 mouseAspect = uMouse * aspect;
+      // Sample the center height of the displacement map
+      float center = texture2D(uDispMap, vUv).r;
       
-      vec2 toMouse = uvAspect - mouseAspect;
-      float dist = length(toMouse);
-      
-      // 1. Smoothstep Falloff (radius of effect)
-      float envelope = smoothstep(0.3, 0.0, dist);
-      
-      // 2. Concentric ring ripple modulation
-      // sin(dist * frequency - time * speed)
-      float ripple = sin(dist * 30.0 - uTime * 10.0);
-      
-      // 3. Distortion Strength formulation
-      // Base barrel push + ripple modulation, scaled by distance envelope and time decay
-      float distortionMagnitude = 0.05 + (ripple * 0.02);
-      float strength = distortionMagnitude * envelope * uDecay;
-      
-      // Calculate normalized direction in standard UV space
-      vec2 dir = vUv - uMouse;
-      float dirLen = length(dir);
-      if (dirLen > 0.0) {
-          dir /= dirLen;
+      // Optimization: if there's no displacement here, render normally
+      if (center < 0.001) {
+          gl_FragColor = texture2D(uTexture, baseUv);
+          return;
       }
+
+      // Compute gradient (slope) of the displacement map by sampling neighbors
+      float right = texture2D(uDispMap, vUv + vec2(uTexel.x, 0.0)).r;
+      float left  = texture2D(uDispMap, vUv - vec2(uTexel.x, 0.0)).r;
+      float up    = texture2D(uDispMap, vUv + vec2(0.0, uTexel.y)).r;
+      float down  = texture2D(uDispMap, vUv - vec2(0.0, uTexel.y)).r;
       
-      // Apply warp: subtracting pulls UVs inward, which creates a bulging fisheye effect outward
-      vec2 warpedUV = baseUv - dir * strength;
+      vec2 grad = vec2(right - left, up - down);
       
-      // Clamp to prevent sampling outside texture boundaries
+      // Create ripple effect inside the drop based on its height
+      float ripple = sin(center * 20.0);
+      float magnitude = uDistortionScale + (ripple * 0.01);
+      
+      // Pull UVs inward along the gradient slope to create an outward bulging fisheye effect
+      vec2 warpedUV = baseUv - grad * magnitude;
+      
+      // Clamp to prevent edge bleeding
       warpedUV = clamp(warpedUV, 0.005, 0.995);
       
       gl_FragColor = texture2D(uTexture, warpedUV);
@@ -150,10 +159,10 @@ export function initHeroWebGL() {
     fragment,
     uniforms: {
       uTexture: { value: mainTexture },
-      uMouse: { value: [0.5, 0.5] },
-      uDecay: { value: 0.0 },
-      uTime: { value: 0.0 },
+      uDispMap: { value: dispTexture },
+      uDistortionScale: { value: CONFIG.distortionScale },
       uResolution: { value: [window.innerWidth, window.innerHeight] },
+      uTexel: { value: [1.0 / window.innerWidth, 1.0 / window.innerHeight] },
       uImageAspect: { value: imageAspect }
     }
   })
@@ -161,42 +170,72 @@ export function initHeroWebGL() {
   const geometry = new Triangle(gl)
   const mesh = new Mesh(gl, { geometry, program })
 
+  // 5. Render Loop
   let isVisible = true
   document.addEventListener('visibilitychange', () => { isVisible = !document.hidden })
 
-  let lastTime = performance.now()
-
-  function animate(now) {
+  function animate() {
     requestAnimationFrame(animate)
     if (!isVisible) return
 
-    const dt = (now - lastTime) / 1000.0
-    lastTime = now
+    // Fade out the hidden canvas very slowly
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.fillStyle = \`rgba(0, 0, 0, \${1.0 - CONFIG.decay})\`;
+    ctx.fillRect(0, 0, dispCanvas.width, dispCanvas.height);
 
-    // Update Time
-    time += dt
+    if (inHero) {
+        const distance = Math.hypot(mouse.x - prevMouse.x, mouse.y - prevMouse.y);
+        const radius = dispCanvas.width * CONFIG.brushSize;
+        
+        if (distance > 0.1) {
+            // Draw droplets along the path
+            const steps = Math.max(1, Math.ceil(distance / (radius * 0.2)));
 
-    // Smoothly lerp current mouse towards target mouse to create a slow trailing effect
-    currentMouse.x += (targetMouse.x - currentMouse.x) * 0.02;
-    currentMouse.y += (targetMouse.y - currentMouse.y) * 0.02;
+            for (let i = 1; i <= steps; i++) {
+                const t = i / steps;
+                const px = prevMouse.x + (mouse.x - prevMouse.x) * t;
+                const py = prevMouse.y + (mouse.y - prevMouse.y) * t;
 
-    // Linearly reduce decay to 0 over 5 seconds so it dies out very slowly
-    decay = Math.max(0.0, decay - (dt / 5.0));
+                const gradient = ctx.createRadialGradient(
+                    px, py, 0,
+                    px, py, radius
+                );
+                gradient.addColorStop(0, \`rgba(255, 255, 255, \${CONFIG.brushStrength})\`);
+                gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
-    // Update Uniforms
-    program.uniforms.uMouse.value = [currentMouse.x, currentMouse.y];
-    program.uniforms.uDecay.value = decay;
-    program.uniforms.uTime.value = time;
+                // Use 'lighten' to merge drops without building up an unnatural flat plateau
+                ctx.globalCompositeOperation = 'lighten';
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(px, py, radius, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        
+        prevMouse.x = mouse.x;
+        prevMouse.y = mouse.y;
+    }
 
+    // Pass the updated height map to the shader
+    dispTexture.image = dispCanvas;
+    dispTexture.needsUpdate = true;
+    
     renderer.render({ scene: mesh })
   }
 
   function resize() {
     renderer.setSize(window.innerWidth, window.innerHeight)
+    dispCanvas.width = window.innerWidth;
+    dispCanvas.height = window.innerHeight;
     program.uniforms.uResolution.value = [window.innerWidth, window.innerHeight]
+    program.uniforms.uTexel.value = [1.0 / window.innerWidth, 1.0 / window.innerHeight]
+    
+    // Clear canvas on resize to prevent scaling artifacts
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, dispCanvas.width, dispCanvas.height);
   }
   
   window.addEventListener('resize', resize)
   resize()
-  requestAnimationFrame(animate)
+  animate()
 }
