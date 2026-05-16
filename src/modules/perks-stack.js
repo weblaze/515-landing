@@ -34,11 +34,6 @@ export function initPerks() {
 
   // Build cards
   perks.forEach((perk, i) => {
-    const wrapperDiv = document.createElement('div')
-    wrapperDiv.className = 'perk-card-wrapper'
-    // Ensure the wrapper preserves layout when the card inside becomes position: fixed
-    wrapperDiv.style.position = 'relative'
-
     const card = document.createElement('div')
     if (perk.type === 'cta') {
       card.className = 'perk-card perk-card-cta'
@@ -51,8 +46,7 @@ export function initPerks() {
         <p class="perk-body">${perk.body}</p>
       `
     }
-    wrapperDiv.appendChild(card)
-    wrapper.appendChild(wrapperDiv)
+    wrapper.appendChild(card)
   })
 
   const allCards = gsap.utils.toArray('.perk-card')
@@ -64,33 +58,31 @@ export function initPerks() {
 
   // Set up the container for absolute positioning stacking
   wrapper.style.position = 'relative'
-  // Calculate total height needed. Cards are ~300px min-height. Let's force them to overlap at bottom.
-  // The easiest way is to let GSAP handle the initial layout, but to stack them we can just set them absolute.
-  const cardHeight = allCards[0].offsetHeight || 300
+  const cardHeight = 320 // We fixed the CSS to 320px for desktop
   wrapper.style.height = `${cardHeight + maxOffset}px`
+  wrapper.style.marginTop = '40px' // Add some spacing from the header
 
   allCards.forEach((card, i) => {
     card.style.position = 'absolute'
     card.style.top = '0'
     card.style.left = '0'
-    card.style.width = '100%'
-    card.style.zIndex = i
-    // Initial position: Card 0 is at 0, Card 1 is at 100vh (offscreen bottom), etc.
+    card.style.right = '0'
+    card.style.margin = '0 auto'
+    card.style.zIndex = i + 1
+    // Initial position: Card 0 is at 0, others wait offscreen at bottom
     if (i > 0) {
       gsap.set(card, { y: window.innerHeight })
     }
   })
 
-  // We pin the wrapper. We scrub an animation that slides them up.
-  // How long to scrub? 100vh per card, plus a pack duration.
   const scrollPerCard = window.innerHeight * 0.8
-  const packDuration = 600
+  const packDuration = window.innerHeight * 0.6
   const totalScroll = (totalCards - 1) * scrollPerCard + packDuration
 
   const tl = gsap.timeline({
     scrollTrigger: {
-      trigger: wrapper,
-      start: 'center center', // Pin when Card 0 is exactly in center
+      trigger: section, // Pin the SECTION so the header stays perfectly centered with the cards!
+      start: 'center center',
       end: `+=${totalScroll}`,
       pin: true,
       scrub: 1,
