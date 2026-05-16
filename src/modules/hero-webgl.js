@@ -1,4 +1,4 @@
-import { Renderer, Program, Mesh, Triangle, Texture } from 'ogl'
+import { Renderer, Program, Mesh, Triangle, Texture, RenderTarget, Geometry } from 'ogl'
 
 export function initHeroWebGL() {
   const canvas = document.getElementById('hero-canvas')
@@ -32,8 +32,8 @@ export function initHeroWebGL() {
   img.onload = () => {
     mainTexture.image = img
     imageAspect = img.naturalWidth / img.naturalHeight
-    if (program) {
-        program.uniforms.uImageAspect.value = imageAspect
+    if (mainProgram) {
+        mainProgram.uniforms.uImageAspect.value = imageAspect
     }
     if (heroImgEl) {
       heroImgEl.style.opacity = '0'
@@ -42,16 +42,160 @@ export function initHeroWebGL() {
   }
   img.src = heroImgEl?.getAttribute('src') || '/hero.webp'
 
-  // --- TRAIL ARRAY SETUP ---
-  const MAX_POINTS = 100;
-  // Each point is [x, y, age]
-  const trail = new Array(MAX_POINTS * 3).fill(0);
-  const MAX_AGE = 6.0; // 6 seconds to die out entirely
+  // --- PARTICLE DROPS SETUP ---
+  const MAX_DROPS = 1000;
+  const MAX_AGE = 6.0;
 
-  for (let i = 0; i < MAX_POINTS * 3; i += 3) {
-      trail[i + 2] = MAX_AGE; // Start all points as dead
+  const positionData = new Float32Array(MAX_DROPS * 2);
+  const ageData = new Float32Array(MAX_DROPS);
+  for (let i = 0; i < MAX_DROPS; i++) {
+      ageData[i] = MAX_AGE; // Start all dead
   }
-  let trailIndex = 0;
+  let dropHead = 0;
+
+  const pointsGeometry = new Geometry(gl, {
+      position: { size: 2, data: positionData },
+      age: { size: 1, data: ageData }
+  });
+
+  const pointsVertex = `
+    attribute vec2 position;
+    attribute float age;
+    uniform float uMaxAge;
+    varying float vAge;
+
+    void main() {
+        if (age >= uMaxAge) {
+            gl_Position = vec4(-2.0, -2.0, 0.0, 1.0); // Offscreen
+            return;
+        }
+        vAge = age;
+        
+        // Growth: start medium (80px), grow slowly to large (250px)
+        float growth = age / uMaxAge;
+        float size = 80.0 + growth * 170.0;
+        gl_PointSize = size;
+        
+        // Map UV coordinates (0 to 1) to Clip Space (-1 to 1)
+        vec2 clipPos = position * 2.0 - 1.0;
+        gl_Position = vec4(clipPos, 0.0, 1.0);
+    }
+  `;
+
+  const pointsFragment = `
+    precision highp float;
+    varying float vAge;
+    uniform float uMaxAge;
+
+    void main() {
+        vec2 coord = gl_PointCoord * 2.0 - 1.0;
+        float dist = length(coord);
+        if (dist > 1.0) discard;
+        
+        // Soft edge envelope
+        float envelope = smoothstep(1.0, 0.0, dist);
+        
+        // Ripple modulation
+        float ripple = sin(dist * 30.0 - vAge * 15.0);
+        
+        // Decay strength slowly
+        float decay = 1.0 - (vAge / uMaxAge);
+        
+        // Strength lessens with time and is modulated by the ripple
+        float strength = (0.4 + ripple * 0.15) * envelope * decay;
+        
+        vec2 dir = normalize(coord);
+        vec2 disp = dir * strength;
+        
+        // Encode vector from [-1, 1] to [0, 1] color
+        gl_FragColor = vec4(disp * 0.5 + 0.5, 0.0, envelope * decay);
+    }
+  `;
+
+  const pointsProgram = new Program(gl, {
+      vertex: pointsVertex,
+      fragment: pointsFragment,
+      transparent: true,
+      depthTest: false,
+      uniforms: {
+          uMaxAge: { value: MAX_AGE }
+      }
+  });
+
+  const pointsMesh = new Mesh(gl, { mode: gl.POINTS, geometry: pointsGeometry, program: pointsProgram });
+
+  // FBO Target for Displacement Map
+  const target = new RenderTarget(gl, {
+      width: window.innerWidth,
+      height: window.innerHeight,
+  });
+
+  // --- MAIN SHADER SETUP ---
+  const mainVertex = `
+    attribute vec2 uv;
+    attribute vec3 position;
+    varying vec2 vUv;
+    void main() {
+      vUv = uv;
+      gl_Position = vec4(position, 1.0);
+    }
+  `;
+
+  const mainFragment = `
+    precision highp float;
+    uniform sampler2D uTexture;
+    uniform sampler2D uDispMap;
+    uniform vec2 uResolution;
+    uniform float uImageAspect;
+    varying vec2 vUv;
+
+    vec2 coverUv(vec2 uv, vec2 res, float imgAspect) {
+      float screenAspect = res.x / res.y;
+      vec2 s = vec2(1.0);
+      if (screenAspect > imgAspect) {
+        s.y = screenAspect / imgAspect;
+      } else {
+        s.x = imgAspect / screenAspect;
+      }
+      return (uv - 0.5) * s + 0.5;
+    }
+
+    void main() {
+      vec2 baseUv = coverUv(vUv, uResolution, uImageAspect);
+      
+      // Read encoded normal map from FBO
+      vec4 fboData = texture2D(uDispMap, vUv);
+      
+      // Decode premultiplied alpha displacement perfectly
+      // C = disp * 0.5 + 0.5
+      // FBO_RG = C * A
+      // FBO_A = A
+      // disp * A = FBO_RG * 2.0 - FBO_A
+      vec2 disp = fboData.rg * 2.0 - vec2(fboData.a);
+      
+      // Pull UVs inward to create bulging fisheye effect outward
+      // Distortion Scale applied directly here
+      vec2 warpedUV = baseUv - disp * 0.15;
+      
+      warpedUV = clamp(warpedUV, 0.005, 0.995);
+      
+      gl_FragColor = texture2D(uTexture, warpedUV);
+    }
+  `;
+
+  const mainProgram = new Program(gl, {
+    vertex: mainVertex,
+    fragment: mainFragment,
+    uniforms: {
+      uTexture: { value: mainTexture },
+      uDispMap: { value: target.texture },
+      uResolution: { value: [window.innerWidth, window.innerHeight] },
+      uImageAspect: { value: imageAspect }
+    }
+  });
+
+  const mainGeometry = new Triangle(gl);
+  const mainMesh = new Mesh(gl, { geometry: mainGeometry, program: mainProgram });
 
   // Mouse Tracking
   let mouse = { x: 0.5, y: 0.5 };
@@ -76,107 +220,6 @@ export function initHeroWebGL() {
     inHero = false;
   });
 
-  // Shader Setup - Fisheye/Ripple mapped across array of droplets
-  const vertex = `
-    attribute vec2 uv;
-    attribute vec3 position;
-    varying vec2 vUv;
-    void main() {
-      vUv = uv;
-      gl_Position = vec4(position, 1.0);
-    }
-  `
-
-  const fragment = `
-    precision highp float;
-    #define MAX_POINTS 100
-
-    uniform sampler2D uTexture;
-    uniform vec3 uTrail[MAX_POINTS]; // [x, y, age]
-    uniform float uMaxAge;
-    uniform vec2 uResolution;
-    uniform float uImageAspect;
-    varying vec2 vUv;
-
-    vec2 coverUv(vec2 uv, vec2 res, float imgAspect) {
-      float screenAspect = res.x / res.y;
-      vec2 s = vec2(1.0);
-      if (screenAspect > imgAspect) {
-        s.y = screenAspect / imgAspect;
-      } else {
-        s.x = imgAspect / screenAspect;
-      }
-      return (uv - 0.5) * s + 0.5;
-    }
-
-    void main() {
-      vec2 baseUv = coverUv(vUv, uResolution, uImageAspect);
-      
-      vec2 aspect = vec2(uResolution.x / uResolution.y, 1.0);
-      vec2 uvAspect = vUv * aspect;
-      
-      vec2 totalDisplacement = vec2(0.0);
-      
-      for(int i = 0; i < MAX_POINTS; i++) {
-          vec3 point = uTrail[i];
-          float age = point.z;
-          
-          if (age >= uMaxAge) continue;
-          
-          vec2 mouseAspect = point.xy * aspect;
-          vec2 toMouse = uvAspect - mouseAspect;
-          float dist = length(toMouse);
-          
-          // Small radius for drops (0.04 matches the previous size request)
-          float envelope = smoothstep(0.04, 0.0, dist);
-          
-          if (envelope > 0.0) {
-              // Concentric ring ripple modulation
-              float ripple = sin(dist * 60.0 - age * 15.0);
-              
-              // Distortion Magnitude
-              float distortionMagnitude = 0.05 + (ripple * 0.015);
-              
-              // Decay the bulge slowly over its lifetime
-              float decay = 1.0 - (age / uMaxAge);
-              float strength = distortionMagnitude * envelope * decay;
-              
-              // Calculate normalized direction in standard UV space
-              vec2 dir = vUv - point.xy;
-              float dirLen = length(dir);
-              if (dirLen > 0.0) {
-                  dir /= dirLen;
-              }
-              
-              totalDisplacement += dir * strength;
-          }
-      }
-      
-      // Pull UVs inward to create bulging fisheye effect outward
-      vec2 warpedUV = baseUv - totalDisplacement;
-      
-      // Clamp to prevent texture repeating/barcode edge bleeding
-      warpedUV = clamp(warpedUV, 0.005, 0.995);
-      
-      gl_FragColor = texture2D(uTexture, warpedUV);
-    }
-  `
-
-  const program = new Program(gl, {
-    vertex,
-    fragment,
-    uniforms: {
-      uTexture: { value: mainTexture },
-      uTrail: { value: trail },
-      uMaxAge: { value: MAX_AGE },
-      uResolution: { value: [window.innerWidth, window.innerHeight] },
-      uImageAspect: { value: imageAspect }
-    }
-  })
-
-  const geometry = new Triangle(gl)
-  const mesh = new Mesh(gl, { geometry, program })
-
   let isVisible = true
   document.addEventListener('visibilitychange', () => { isVisible = !document.hidden })
   let lastTime = performance.now()
@@ -188,21 +231,20 @@ export function initHeroWebGL() {
     const dt = (now - lastTime) / 1000.0
     lastTime = now
 
-    // Increase age of all active drops
-    for (let i = 0; i < MAX_POINTS; i++) {
-        if (trail[i * 3 + 2] < MAX_AGE) {
-            trail[i * 3 + 2] += dt;
+    // Update ages
+    for (let i = 0; i < MAX_DROPS; i++) {
+        if (ageData[i] < MAX_AGE) {
+            ageData[i] += dt;
         }
     }
 
     if (inHero) {
-        // Distance in UV space
         const dx = mouse.x - prevMouse.x;
         const dy = mouse.y - prevMouse.y;
         const distance = Math.hypot(dx, dy);
         
-        // Drop a point every 0.01 UV distance (~20 pixels) to create a line of discrete droplets
-        const dropThreshold = 0.01;
+        // Drop a point frequently to create a continuous dynamic path
+        const dropThreshold = 0.005;
         
         if (distance > dropThreshold) {
             const steps = Math.max(1, Math.floor(distance / dropThreshold));
@@ -212,27 +254,37 @@ export function initHeroWebGL() {
                 const px = prevMouse.x + dx * t;
                 const py = prevMouse.y + dy * t;
                 
-                // Add new drop to array
-                trail[trailIndex * 3] = px;
-                trail[trailIndex * 3 + 1] = py;
-                trail[trailIndex * 3 + 2] = 0.0; // Age = 0
+                positionData[dropHead * 2] = px;
+                positionData[dropHead * 2 + 1] = py;
+                ageData[dropHead] = 0.0;
                 
-                trailIndex = (trailIndex + 1) % MAX_POINTS;
+                dropHead = (dropHead + 1) % MAX_DROPS;
             }
             prevMouse.x = mouse.x;
             prevMouse.y = mouse.y;
         }
     }
 
-    // Force OGL to upload the new array data to the GPU by passing a new standard Array reference
-    program.uniforms.uTrail.value = trail.slice(0);
-    
-    renderer.render({ scene: mesh })
+    // Upload updated attributes to GPU
+    pointsGeometry.attributes.age.needsUpdate = true;
+    pointsGeometry.attributes.position.needsUpdate = true;
+
+    // 1. Render droplets to FBO (Clears to transparent black each frame)
+    gl.clearColor(0, 0, 0, 0);
+    renderer.render({ scene: pointsMesh, target: target, clear: true });
+
+    // 2. Render Main Shader to screen
+    gl.clearColor(0, 0, 0, 1);
+    renderer.render({ scene: mainMesh });
   }
 
   function resize() {
     renderer.setSize(window.innerWidth, window.innerHeight)
-    program.uniforms.uResolution.value = [window.innerWidth, window.innerHeight]
+    
+    // Resize FBO
+    target.setSize(window.innerWidth, window.innerHeight);
+    
+    mainProgram.uniforms.uResolution.value = [window.innerWidth, window.innerHeight]
   }
   
   window.addEventListener('resize', resize)
