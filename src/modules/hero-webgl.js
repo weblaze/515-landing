@@ -40,7 +40,7 @@ export function initHeroWebGL() {
       heroImgEl.style.pointerEvents = 'none'
     }
   }
-  img.src = heroImgEl?.getAttribute('src') || '/hero.jpg'
+  img.src = heroImgEl?.getAttribute('src') || '/hero.webp'
 
   // Mouse Tracking State
   let targetMouse = { x: 0.5, y: 0.5 };
