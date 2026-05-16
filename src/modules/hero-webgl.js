@@ -1,12 +1,5 @@
 import { Renderer, Program, Mesh, Triangle, Texture } from 'ogl'
 
-const CONFIG = {
-  brushSize: 0.03,       // Smaller radius for the drops
-  brushStrength: 0.6,    // Height of the liquid drops
-  decay: 0.995,          // extremely slow fade out (leaves a long trail)
-  distortionScale: 0.1   // Magnification bulge amount
-};
-
 export function initHeroWebGL() {
   const canvas = document.getElementById('hero-canvas')
   if (!canvas) return
@@ -23,23 +16,7 @@ export function initHeroWebGL() {
   const gl = renderer.gl
   gl.clearColor(0, 0, 0, 1)
 
-  // 1. Setup Hidden 2D Canvas (The Displacement Height Map)
-  const dispCanvas = document.createElement('canvas');
-  dispCanvas.width = window.innerWidth;
-  dispCanvas.height = window.innerHeight;
-  const ctx = dispCanvas.getContext('2d', { willReadFrequently: true });
-  
-  ctx.fillStyle = 'black';
-  ctx.fillRect(0, 0, dispCanvas.width, dispCanvas.height);
-
-  const dispTexture = new Texture(gl, {
-    image: dispCanvas,
-    generateMipmaps: false,
-    minFilter: gl.LINEAR,
-    magFilter: gl.LINEAR
-  });
-
-  // 2. Main Image Texture
+  // Main Image Texture
   const mainTexture = new Texture(gl, {
     generateMipmaps: false,
     minFilter: gl.LINEAR,
@@ -65,17 +42,28 @@ export function initHeroWebGL() {
   }
   img.src = heroImgEl?.getAttribute('src') || '/hero.webp'
 
-  // 3. Mouse Tracking
-  let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-  let prevMouse = { x: mouse.x, y: mouse.y };
+  // --- TRAIL ARRAY SETUP ---
+  const MAX_POINTS = 100;
+  // Each point is [x, y, age]
+  const trail = new Float32Array(MAX_POINTS * 3);
+  const MAX_AGE = 6.0; // 6 seconds to die out entirely
+
+  for (let i = 0; i < MAX_POINTS * 3; i += 3) {
+      trail[i + 2] = MAX_AGE; // Start all points as dead
+  }
+  let trailIndex = 0;
+
+  // Mouse Tracking
+  let mouse = { x: 0.5, y: 0.5 };
+  let prevMouse = { x: 0.5, y: 0.5 };
   let inHero = false;
 
   const heroEl = document.getElementById('hero')
 
   heroEl.addEventListener('mousemove', (e) => {
     const rect = heroEl.getBoundingClientRect();
-    mouse.x = e.clientX - rect.left;
-    mouse.y = e.clientY - rect.top;
+    mouse.x = (e.clientX - rect.left) / rect.width;
+    mouse.y = 1.0 - ((e.clientY - rect.top) / rect.height);
     
     if (!inHero) {
         prevMouse.x = mouse.x;
@@ -88,7 +76,7 @@ export function initHeroWebGL() {
     inHero = false;
   });
 
-  // 4. Shader Setup
+  // Shader Setup - Fisheye/Ripple mapped across array of droplets
   const vertex = `
     attribute vec2 uv;
     attribute vec3 position;
@@ -101,11 +89,12 @@ export function initHeroWebGL() {
 
   const fragment = `
     precision highp float;
+    #define MAX_POINTS 100
+
     uniform sampler2D uTexture;
-    uniform sampler2D uDispMap;
-    uniform float uDistortionScale;
+    uniform vec3 uTrail[MAX_POINTS]; // [x, y, age]
+    uniform float uMaxAge;
     uniform vec2 uResolution;
-    uniform vec2 uTexel;
     uniform float uImageAspect;
     varying vec2 vUv;
 
@@ -123,31 +112,50 @@ export function initHeroWebGL() {
     void main() {
       vec2 baseUv = coverUv(vUv, uResolution, uImageAspect);
       
-      // Sample the center height of the displacement map
-      float center = texture2D(uDispMap, vUv).r;
+      vec2 aspect = vec2(uResolution.x / uResolution.y, 1.0);
+      vec2 uvAspect = vUv * aspect;
       
-      // Optimization: if there's no displacement here, render normally
-      if (center < 0.001) {
-          gl_FragColor = texture2D(uTexture, baseUv);
-          return;
+      vec2 totalDisplacement = vec2(0.0);
+      
+      for(int i = 0; i < MAX_POINTS; i++) {
+          vec3 point = uTrail[i];
+          float age = point.z;
+          
+          if (age >= uMaxAge) continue;
+          
+          vec2 mouseAspect = point.xy * aspect;
+          vec2 toMouse = uvAspect - mouseAspect;
+          float dist = length(toMouse);
+          
+          // Small radius for drops (0.04 matches the previous size request)
+          float envelope = smoothstep(0.04, 0.0, dist);
+          
+          if (envelope > 0.0) {
+              // Concentric ring ripple modulation
+              float ripple = sin(dist * 60.0 - age * 15.0);
+              
+              // Distortion Magnitude
+              float distortionMagnitude = 0.05 + (ripple * 0.015);
+              
+              // Decay the bulge slowly over its lifetime
+              float decay = 1.0 - (age / uMaxAge);
+              float strength = distortionMagnitude * envelope * decay;
+              
+              // Calculate normalized direction in standard UV space
+              vec2 dir = vUv - point.xy;
+              float dirLen = length(dir);
+              if (dirLen > 0.0) {
+                  dir /= dirLen;
+              }
+              
+              totalDisplacement += dir * strength;
+          }
       }
-
-      // Compute gradient (slope) of the displacement map by sampling neighbors
-      float right = texture2D(uDispMap, vUv + vec2(uTexel.x, 0.0)).r;
-      float left  = texture2D(uDispMap, vUv - vec2(uTexel.x, 0.0)).r;
-      float up    = texture2D(uDispMap, vUv + vec2(0.0, uTexel.y)).r;
-      float down  = texture2D(uDispMap, vUv - vec2(0.0, uTexel.y)).r;
       
-      vec2 grad = vec2(right - left, up - down);
+      // Pull UVs inward to create bulging fisheye effect outward
+      vec2 warpedUV = baseUv - totalDisplacement;
       
-      // Create ripple effect inside the drop based on its height
-      float ripple = sin(center * 20.0);
-      float magnitude = uDistortionScale + (ripple * 0.01);
-      
-      // Pull UVs inward along the gradient slope to create an outward bulging fisheye effect
-      vec2 warpedUV = baseUv - grad * magnitude;
-      
-      // Clamp to prevent edge bleeding
+      // Clamp to prevent texture repeating/barcode edge bleeding
       warpedUV = clamp(warpedUV, 0.005, 0.995);
       
       gl_FragColor = texture2D(uTexture, warpedUV);
@@ -159,10 +167,9 @@ export function initHeroWebGL() {
     fragment,
     uniforms: {
       uTexture: { value: mainTexture },
-      uDispMap: { value: dispTexture },
-      uDistortionScale: { value: CONFIG.distortionScale },
+      uTrail: { value: trail },
+      uMaxAge: { value: MAX_AGE },
       uResolution: { value: [window.innerWidth, window.innerHeight] },
-      uTexel: { value: [1.0 / window.innerWidth, 1.0 / window.innerHeight] },
       uImageAspect: { value: imageAspect }
     }
   })
@@ -170,72 +177,64 @@ export function initHeroWebGL() {
   const geometry = new Triangle(gl)
   const mesh = new Mesh(gl, { geometry, program })
 
-  // 5. Render Loop
   let isVisible = true
   document.addEventListener('visibilitychange', () => { isVisible = !document.hidden })
+  let lastTime = performance.now()
 
-  function animate() {
+  function animate(now) {
     requestAnimationFrame(animate)
     if (!isVisible) return
 
-    // Fade out the hidden canvas very slowly
-    ctx.globalCompositeOperation = 'source-over';
-    ctx.fillStyle = `rgba(0, 0, 0, ${1.0 - CONFIG.decay})`;
-    ctx.fillRect(0, 0, dispCanvas.width, dispCanvas.height);
+    const dt = (now - lastTime) / 1000.0
+    lastTime = now
 
-    if (inHero) {
-        const distance = Math.hypot(mouse.x - prevMouse.x, mouse.y - prevMouse.y);
-        const radius = dispCanvas.width * CONFIG.brushSize;
-        
-        if (distance > 0.1) {
-            // Draw droplets along the path
-            const steps = Math.max(1, Math.ceil(distance / (radius * 0.2)));
-
-            for (let i = 1; i <= steps; i++) {
-                const t = i / steps;
-                const px = prevMouse.x + (mouse.x - prevMouse.x) * t;
-                const py = prevMouse.y + (mouse.y - prevMouse.y) * t;
-
-                const gradient = ctx.createRadialGradient(
-                    px, py, 0,
-                    px, py, radius
-                );
-                gradient.addColorStop(0, `rgba(255, 255, 255, ${CONFIG.brushStrength})`);
-                gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
-
-                // Use 'lighten' to merge drops without building up an unnatural flat plateau
-                ctx.globalCompositeOperation = 'lighten';
-                ctx.fillStyle = gradient;
-                ctx.beginPath();
-                ctx.arc(px, py, radius, 0, Math.PI * 2);
-                ctx.fill();
-            }
+    // Increase age of all active drops
+    for (let i = 0; i < MAX_POINTS; i++) {
+        if (trail[i * 3 + 2] < MAX_AGE) {
+            trail[i * 3 + 2] += dt;
         }
-        
-        prevMouse.x = mouse.x;
-        prevMouse.y = mouse.y;
     }
 
-    // Pass the updated height map to the shader
-    dispTexture.image = dispCanvas;
-    dispTexture.needsUpdate = true;
+    if (inHero) {
+        // Distance in UV space
+        const dx = mouse.x - prevMouse.x;
+        const dy = mouse.y - prevMouse.y;
+        const distance = Math.hypot(dx, dy);
+        
+        // Drop a point every 0.01 UV distance (~20 pixels) to create a line of discrete droplets
+        const dropThreshold = 0.01;
+        
+        if (distance > dropThreshold) {
+            const steps = Math.max(1, Math.floor(distance / dropThreshold));
+            
+            for (let i = 1; i <= steps; i++) {
+                const t = i / steps;
+                const px = prevMouse.x + dx * t;
+                const py = prevMouse.y + dy * t;
+                
+                // Add new drop to array
+                trail[trailIndex * 3] = px;
+                trail[trailIndex * 3 + 1] = py;
+                trail[trailIndex * 3 + 2] = 0.0; // Age = 0
+                
+                trailIndex = (trailIndex + 1) % MAX_POINTS;
+            }
+            prevMouse.x = mouse.x;
+            prevMouse.y = mouse.y;
+        }
+    }
+
+    program.uniforms.uTrail.value = trail;
     
     renderer.render({ scene: mesh })
   }
 
   function resize() {
     renderer.setSize(window.innerWidth, window.innerHeight)
-    dispCanvas.width = window.innerWidth;
-    dispCanvas.height = window.innerHeight;
     program.uniforms.uResolution.value = [window.innerWidth, window.innerHeight]
-    program.uniforms.uTexel.value = [1.0 / window.innerWidth, 1.0 / window.innerHeight]
-    
-    // Clear canvas on resize to prevent scaling artifacts
-    ctx.fillStyle = 'black';
-    ctx.fillRect(0, 0, dispCanvas.width, dispCanvas.height);
   }
   
   window.addEventListener('resize', resize)
   resize()
-  animate()
+  requestAnimationFrame(animate)
 }
