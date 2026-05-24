@@ -1,0 +1,719 @@
+/* ==========================================================================
+   THEME: DIRECTION 4 - POSTER SYSTEM (Type as Image, Graphic Boldness)
+   ========================================================================== */
+
+html.theme-poster body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+}
+
+/* --- Global Type and Transitions Overrides --- */
+html.theme-poster body,
+html.theme-poster p,
+html.theme-poster a,
+html.theme-poster span,
+html.theme-poster label,
+html.theme-poster input,
+html.theme-poster textarea,
+html.theme-poster button {
+  font-family: var(--font-body) !important;
+  font-weight: 400 !important; /* tiny, precise, invisible */
+  transition-duration: var(--duration-fast) !important;
+  transition-timing-function: var(--ease-spring) !important;
+}
+
+html.theme-poster h1,
+html.theme-poster h2,
+html.theme-poster h3,
+html.theme-poster h4,
+html.theme-poster .theme-display-heading,
+html.theme-poster .hero-center-title h1,
+html.theme-poster .about-word-left,
+html.theme-poster .about-word-right,
+html.theme-poster .footer-statement-instrument {
+  font-family: var(--font-display) !important;
+  font-weight: 400 !important; /* Anton is weight 400, but heavy */
+  text-transform: uppercase !important;
+  letter-spacing: -0.015em !important;
+}
+
+/* Hide original elements */
+html.theme-poster .window-chrome,
+html.theme-poster .instrument-legend-row,
+html.theme-poster .brutalist-marquee {
+  display: none !important;
+}
+
+/* Section bleed settings - add left padding for vertical labels */
+html.theme-poster #highlight,
+html.theme-poster #services,
+html.theme-poster .perks-section,
+html.theme-poster #about,
+html.theme-poster .projects-section,
+html.theme-poster #contact {
+  position: relative !important;
+  padding-left: calc(var(--size-section-pad-h) + 24px) !important;
+  border: none !important;
+  border-radius: 0px !important;
+}
+
+/* --- Section Color Map --- */
+html.theme-poster #hero {
+  background-color: var(--bg-blue) !important;
+  color: var(--text-white) !important;
+}
+html.theme-poster #hero h1 {
+  color: var(--text-red) !important;
+}
+html.theme-poster #highlight {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+html.theme-poster #services {
+  background-color: var(--bg-black) !important;
+  color: var(--text-white) !important;
+}
+html.theme-poster .perks-section {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+html.theme-poster #about {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+html.theme-poster .projects-section {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+html.theme-poster #contact {
+  background-color: var(--bg-red) !important;
+  color: var(--text-white) !important;
+}
+html.theme-poster .footer {
+  background-color: var(--bg-black) !important;
+  color: var(--text-white) !important;
+}
+
+/* --- Navigation --- */
+html.theme-poster .nav {
+  background: transparent !important;
+  border-bottom: none !important;
+  mix-blend-mode: normal !important;
+  transition: none !important;
+}
+html.theme-poster .nav .nav-wordmark,
+html.theme-poster .nav .nav-time,
+html.theme-poster .nav .theme-toggle-btn {
+  transition: none !important;
+}
+html.theme-poster .nav[data-poster-color="white"] .nav-wordmark,
+html.theme-poster .nav[data-poster-color="white"] .nav-time,
+html.theme-poster .nav[data-poster-color="white"] .theme-toggle-btn {
+  color: var(--text-white) !important;
+}
+html.theme-poster .nav[data-poster-color="black"] .nav-wordmark,
+html.theme-poster .nav[data-poster-color="black"] .nav-time,
+html.theme-poster .nav[data-poster-color="black"] .theme-toggle-btn {
+  color: var(--text-primary) !important;
+}
+html.theme-poster .nav:not([data-poster-color]) .nav-wordmark,
+html.theme-poster .nav:not([data-poster-color]) .nav-time,
+html.theme-poster .nav:not([data-poster-color]) .theme-toggle-btn {
+  color: var(--text-white) !important;
+}
+
+html.theme-poster .theme-toggle-btn {
+  border: none !important;
+  background: transparent !important;
+  opacity: 0.6;
+}
+html.theme-poster .theme-toggle-btn:hover {
+  opacity: 1;
+}
+
+/* --- Display Headings Sizing & Bleeds --- */
+html.theme-poster .theme-display-heading {
+  display: block !important;
+  margin-top: 0 !important;
+  margin-bottom: var(--gap-lg) !important;
+  margin-left: calc((var(--size-section-pad-h) + 24px) * -1) !important;
+  margin-right: calc(var(--size-section-pad-h) * -1) !important;
+  width: 100vw !important;
+  padding: 0 !important;
+  line-height: 0.8 !important;
+  text-align: left;
+}
+
+html.theme-poster #highlight .theme-display-heading { font-size: clamp(80px, 11.5vw, 220px) !important; }
+html.theme-poster #services .theme-display-heading { font-size: clamp(80px, 14vw, 220px) !important; }
+html.theme-poster .perks-section .theme-display-heading { font-size: clamp(80px, 18vw, 220px) !important; }
+html.theme-poster .projects-section .theme-display-heading { font-size: clamp(80px, 16vw, 220px) !important; }
+html.theme-poster #contact .theme-display-heading { font-size: clamp(80px, 12.5vw, 220px) !important; }
+
+/* --- Section Labels --- */
+html.theme-poster .section-label {
+  position: absolute !important;
+  left: 20px !important;
+  top: var(--size-section-pad-v) !important;
+  writing-mode: vertical-rl !important;
+  text-transform: uppercase !important;
+  font-family: var(--font-body) !important;
+  font-size: 11px !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.15em !important;
+  color: inherit !important;
+  opacity: 0.5;
+  margin: 0 !important;
+  padding: 0 !important;
+  z-index: 10 !important;
+  transform: rotate(180deg) !important;
+}
+
+/* --- Hero Section --- */
+html.theme-poster #hero {
+  border: none !important;
+  padding-left: var(--size-section-pad-h) !important;
+}
+html.theme-poster .hero-center-title h1 {
+  font-size: clamp(80px, 16vw, 240px) !important;
+  line-height: 0.8 !important;
+  text-shadow: none !important;
+}
+html.theme-poster .hero-center-title h1 br {
+  display: none !important;
+}
+html.theme-poster .hero-tagline,
+html.theme-poster .hero-scroll-hint {
+  color: var(--text-white) !important;
+  opacity: 0.6;
+}
+html.theme-poster .hero-image {
+  mix-blend-mode: luminosity !important;
+  opacity: 0.7 !important;
+}
+html.theme-poster #hero::after {
+  display: none !important;
+}
+
+/* --- Highlight Projects Grid --- */
+html.theme-poster .highlight-grid {
+  padding-left: 0 !important;
+}
+html.theme-poster .highlight-card {
+  border: none !important;
+  background: transparent !important;
+}
+html.theme-poster .highlight-card-media {
+  border-radius: 0px !important;
+  border: 1px solid var(--border) !important;
+}
+html.theme-poster .highlight-card-title {
+  color: var(--text-primary) !important;
+  font-family: var(--font-display) !important;
+  font-size: clamp(22px, 2.5vw, 36px) !important;
+}
+html.theme-poster .highlight-card-desc {
+  color: var(--text-primary) !important;
+  opacity: 0.6;
+}
+
+/* --- Tags: pure text, slash-separated --- */
+html.theme-poster .tag-year,
+html.theme-poster .tag-category,
+html.theme-poster .masonry-year,
+html.theme-poster .masonry-type,
+html.theme-poster .project-row-category,
+html.theme-poster .project-row-year {
+  border: none !important;
+  border-radius: 0 !important;
+  background: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  color: inherit !important;
+  opacity: 0.6;
+  text-transform: uppercase !important;
+  font-size: 11px !important;
+}
+html.theme-poster .highlight-card-tags,
+html.theme-poster .project-row-meta,
+html.theme-poster .masonry-meta {
+  display: flex !important;
+  gap: 6px !important;
+  align-items: center !important;
+}
+html.theme-poster .tag-year::after,
+html.theme-poster .project-row-category::after,
+html.theme-poster .masonry-year::after {
+  content: " /" !important;
+  margin-left: 6px !important;
+}
+
+/* --- Services Columns --- */
+html.theme-poster #services {
+  padding-right: var(--size-section-pad-h) !important;
+}
+html.theme-poster .services-columns {
+  margin: 0 !important;
+  border-color: var(--text-white) !important;
+  border-radius: 0px !important;
+}
+html.theme-poster .service-col {
+  background: var(--bg-black) !important;
+  border-color: var(--text-white) !important;
+  color: var(--text-white) !important;
+  border-radius: 0px !important;
+}
+html.theme-poster .service-col::after {
+  display: none !important;
+}
+html.theme-poster .service-col-edge-highlight,
+html.theme-poster .service-col-num {
+  display: none !important;
+}
+html.theme-poster .service-col-label {
+  font-family: var(--font-display) !important;
+  font-size: clamp(24px, 2.5vw, 40px) !important;
+  color: var(--text-white) !important;
+}
+html.theme-poster .service-col-desc {
+  color: var(--text-white) !important;
+  opacity: 0.7 !important;
+}
+html.theme-poster .service-col-media {
+  border-radius: 0px !important;
+}
+/* Interruption active state: background changes to orange, text to black */
+html.theme-poster .service-col.active {
+  background: var(--accent-orange) !important;
+  color: var(--text-primary) !important;
+}
+html.theme-poster .service-col.active .service-col-label {
+  color: var(--text-primary) !important;
+}
+html.theme-poster .service-col.active .service-col-desc {
+  color: var(--text-primary) !important;
+  opacity: 0.8 !important;
+}
+
+/* --- Perks Section --- */
+html.theme-poster .perks-cards {
+  margin: 0 !important;
+}
+html.theme-poster .perk-card {
+  border: 1px solid var(--border) !important;
+  background: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+  border-radius: 0px !important;
+}
+html.theme-poster .perk-number {
+  font-family: var(--font-body) !important;
+  color: var(--text-primary) !important;
+  opacity: 0.5;
+  font-size: 11px !important;
+}
+html.theme-poster .perk-heading {
+  font-family: var(--font-display) !important;
+  color: var(--text-primary) !important;
+  font-size: clamp(22px, 2.5vw, 36px) !important;
+}
+html.theme-poster .perk-body {
+  color: var(--text-primary) !important;
+  opacity: 0.6;
+}
+html.theme-poster .perk-card-cta {
+  background: var(--accent-orange) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border) !important;
+}
+html.theme-poster .perk-card-cta .perk-cta-text {
+  font-family: var(--font-display) !important;
+  color: var(--text-primary) !important;
+  font-size: clamp(24px, 3vw, 40px) !important;
+}
+
+/* --- About Section side-by-side grid --- */
+html.theme-poster #about {
+  padding-right: var(--size-section-pad-h) !important;
+}
+html.theme-poster .about-section {
+  text-align: left !important;
+  display: grid !important;
+  grid-template-columns: 1fr 320px;
+  grid-template-rows: auto auto;
+  gap: var(--gap-md) var(--gap-lg);
+  align-items: start;
+}
+html.theme-poster .about-heading-wrap {
+  grid-column: 1 / -1;
+  height: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  margin-bottom: 0 !important;
+}
+html.theme-poster .about-word-left,
+html.theme-poster .about-word-right {
+  position: static !important;
+  font-family: var(--font-display) !important;
+  font-size: clamp(80px, 16vw, 240px) !important;
+  letter-spacing: -0.02em !important;
+  line-height: 0.8 !important;
+  text-transform: uppercase !important;
+  width: 100vw !important;
+  margin-left: calc((var(--size-section-pad-h) + 24px) * -1) !important;
+  margin-right: calc(var(--size-section-pad-h) * -1) !important;
+  text-align: left !important;
+  display: block !important;
+  transform: none !important;
+  color: var(--text-primary) !important;
+}
+html.theme-poster .about-photo-wrap {
+  grid-column: 2;
+  width: 100% !important;
+  max-width: 320px !important;
+  margin: 0 !important;
+  aspect-ratio: 4/3;
+  border-radius: 0px !important;
+  border: 1px solid var(--border) !important;
+}
+html.theme-poster .about-photo {
+  filter: grayscale(100%) !important;
+  opacity: 0.8;
+}
+html.theme-poster .about-copy-wrap {
+  grid-column: 1;
+  margin-top: 0 !important;
+}
+html.theme-poster .about-copy {
+  color: var(--text-primary) !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+}
+html.theme-poster .about-socials,
+html.theme-poster .about-socials a {
+  color: var(--text-primary) !important;
+  opacity: 0.6;
+}
+html.theme-poster .about-socials a:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  html.theme-poster .about-section {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  html.theme-poster .about-photo-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+/* --- All Projects Masonry Grid --- */
+html.theme-poster .projects-section {
+  padding-right: var(--size-section-pad-h) !important;
+}
+html.theme-poster .projects-section::before,
+html.theme-poster .projects-section::after {
+  display: none !important;
+}
+html.theme-poster .masonry-grid {
+  column-gap: var(--gap-md) !important;
+}
+html.theme-poster .masonry-item {
+  border: 1px solid var(--border) !important;
+  background: var(--bg-primary) !important;
+  padding: var(--gap-sm) !important;
+  border-radius: 0px !important;
+  box-shadow: none !important;
+}
+html.theme-poster .masonry-media {
+  border-radius: 0px !important;
+  border: 1px solid var(--border) !important;
+}
+html.theme-poster .masonry-title {
+  color: var(--text-primary) !important;
+  font-family: var(--font-body) !important;
+  font-size: 13px !important;
+}
+
+/* --- CTAs: plain text at body size --- */
+html.theme-poster .view-all-link {
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  margin-top: var(--gap-md) !important;
+  font-family: var(--font-body) !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  color: var(--text-primary) !important;
+  border-bottom: 1px solid var(--text-primary) !important;
+  border-radius: 0 !important;
+}
+html.theme-poster .view-all-link:hover {
+  opacity: 0.6;
+}
+
+/* --- Contact Section --- */
+html.theme-poster #contact {
+  padding-right: var(--size-section-pad-h) !important;
+}
+html.theme-poster .contact-inner {
+  border: none !important;
+}
+html.theme-poster .contact-info {
+  padding: 0 !important;
+}
+html.theme-poster .contact-email {
+  color: var(--text-white) !important;
+  font-family: var(--font-body) !important;
+  font-size: clamp(16px, 2vw, 24px) !important;
+  text-decoration: underline !important;
+}
+html.theme-poster .contact-insta {
+  color: var(--text-white) !important;
+  opacity: 0.6;
+}
+html.theme-poster .contact-form input,
+html.theme-poster .contact-form textarea {
+  border: none !important;
+  border-bottom: 1px solid var(--text-white) !important;
+  background: transparent !important;
+  color: var(--text-white) !important;
+  border-radius: 0px !important;
+  padding: 10px 0 !important;
+}
+html.theme-poster .contact-form input:focus,
+html.theme-poster .contact-form textarea:focus {
+  outline: none !important;
+  border-bottom-color: var(--accent-orange) !important;
+}
+html.theme-poster .contact-form label {
+  color: var(--text-white) !important;
+  font-family: var(--font-body) !important;
+  text-transform: uppercase !important;
+  font-size: 11px !important;
+  opacity: 0.6;
+}
+html.theme-poster .form-submit {
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  margin-top: var(--gap-md) !important;
+  color: var(--text-white) !important;
+  font-family: var(--font-body) !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  text-transform: none !important;
+  border-bottom: 1px solid var(--text-white) !important;
+  border-radius: 0 !important;
+  display: inline-flex !important;
+}
+html.theme-poster .form-submit:hover {
+  opacity: 0.6;
+  background: transparent !important;
+  color: var(--text-white) !important;
+}
+
+/* --- Footer --- */
+html.theme-poster .footer {
+  border-top: none !important;
+  padding-left: calc(var(--size-section-pad-h) + 24px) !important;
+}
+html.theme-poster .footer-statement {
+  display: none !important;
+}
+html.theme-poster .footer-statement-instrument {
+  display: block !important;
+  font-family: var(--font-display) !important;
+  font-size: clamp(80px, 15vw, 220px) !important;
+  color: var(--text-white) !important;
+  margin-bottom: var(--gap-md) !important;
+  letter-spacing: -0.02em !important;
+  line-height: 0.8 !important;
+}
+html.theme-poster .footer-bottom {
+  border-top: 1px solid rgba(240, 237, 232, 0.1) !important;
+  color: var(--text-white) !important;
+  opacity: 0.6;
+}
+html.theme-poster .footer-wordmark {
+  color: var(--text-white) !important;
+}
+
+/* --- Cursor --- */
+html.theme-poster .cursor-ball {
+  background: var(--accent-orange) !important;
+  border-radius: 0px !important;
+  mix-blend-mode: normal !important;
+  box-shadow: none !important;
+  width: 12px !important;
+  height: 12px !important;
+}
+html.theme-poster .cursor-pill {
+  background: var(--accent-orange) !important;
+  color: var(--text-primary) !important;
+  border-radius: 0px !important;
+  mix-blend-mode: normal !important;
+  box-shadow: none !important;
+}
+
+/* --- Projects Subpage Ruled Table styling --- */
+html.theme-poster .projects-page {
+  padding-left: 0 !important;
+  background: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+html.theme-poster .projects-page-header {
+  padding-left: calc(var(--size-section-pad-h) + 24px) !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: var(--gap-md) !important;
+  margin-bottom: var(--gap-md) !important;
+}
+html.theme-poster .back-link {
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  font-family: var(--font-body) !important;
+  font-size: 13px !important;
+  text-transform: none !important;
+  color: var(--text-primary) !important;
+  opacity: 0.6;
+}
+html.theme-poster .back-link:hover {
+  opacity: 1;
+  background: transparent !important;
+  filter: none !important;
+}
+
+html.theme-poster .projects-page-title {
+  font-family: var(--font-display) !important;
+  font-size: clamp(80px, 15vw, 220px) !important;
+  letter-spacing: -0.02em !important;
+  line-height: 0.8 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  margin-left: calc((var(--size-section-pad-h) + 24px) * -1) !important;
+  margin-right: calc(var(--size-section-pad-h) * -1) !important;
+  width: 100vw !important;
+  padding: 0 !important;
+  text-align: left !important;
+  color: var(--text-primary) !important;
+}
+
+html.theme-poster .projects-filters {
+  padding-left: calc(var(--size-section-pad-h) + 24px) !important;
+  margin-bottom: var(--gap-lg) !important;
+}
+html.theme-poster .filter-label {
+  color: var(--text-primary) !important;
+  opacity: 0.5;
+}
+html.theme-poster .filter-btn {
+  border: none !important;
+  background: none !important;
+  border-radius: 0 !important;
+  padding: 4px 8px !important;
+  color: var(--text-primary) !important;
+  opacity: 0.6 !important;
+  box-shadow: none !important;
+}
+html.theme-poster .filter-btn.active,
+html.theme-poster .filter-btn:hover {
+  opacity: 1 !important;
+  background: none !important;
+  text-decoration: underline !important;
+  filter: none !important;
+}
+
+html.theme-poster .projects-list {
+  padding-left: calc(var(--size-section-pad-h) + 24px) !important;
+  padding-right: var(--size-section-pad-h) !important;
+}
+
+/* Ruled Table Layout and Rows */
+html.theme-poster .project-table-header {
+  display: grid !important;
+  grid-template-columns: 80px 2fr 1.2fr 1.2fr 100px !important;
+  gap: 16px !important;
+  padding: 16px 24px !important;
+  font-family: var(--font-body) !important;
+  font-size: 11px !important;
+  font-weight: 400 !important;
+  text-transform: uppercase !important;
+  color: var(--text-primary) !important;
+  opacity: 0.5 !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+html.theme-poster .poster-table-row {
+  display: grid !important;
+  grid-template-columns: 80px 2fr 1.2fr 1.2fr 100px !important;
+  gap: 16px !important;
+  padding: 24px 24px !important;
+  align-items: center !important;
+  border-top: none !important;
+  border-bottom: 1px solid var(--border) !important;
+  text-decoration: none !important;
+  background: transparent !important;
+  color: var(--text-primary) !important;
+  transition: none !important; /* hover instant swap */
+}
+
+html.theme-poster .poster-table-row:last-child {
+  border-bottom: 1px solid var(--border) !important;
+}
+
+/* Hover swap */
+html.theme-poster .poster-table-row:hover {
+  background: var(--bg-black) !important;
+  color: var(--text-white) !important;
+}
+
+html.theme-poster .poster-table-row .col-num {
+  font-family: var(--font-body) !important;
+  font-size: 14px !important;
+  opacity: 0.6 !important;
+}
+
+html.theme-poster .poster-table-row:hover .col-num {
+  opacity: 1 !important;
+}
+
+html.theme-poster .poster-table-row .col-name {
+  font-family: var(--font-display) !important;
+  font-size: clamp(24px, 3vw, 40px) !important;
+  margin: 0 !important;
+  font-weight: 400 !important;
+  line-height: 1 !important;
+  color: inherit !important;
+}
+
+html.theme-poster .poster-table-row .col-client,
+html.theme-poster .poster-table-row .col-type,
+html.theme-poster .poster-table-row .col-year {
+  font-family: var(--font-body) !important;
+  font-size: 14px !important;
+  color: inherit !important;
+}
+
+@media (max-width: 768px) {
+  html.theme-poster .project-table-header {
+    display: none !important;
+  }
+  html.theme-poster .poster-table-row {
+    grid-template-columns: 40px 1fr 80px !important;
+    padding: 16px !important;
+  }
+  html.theme-poster .poster-table-row .col-client,
+  html.theme-poster .poster-table-row .col-type {
+    display: none !important;
+  }
+}

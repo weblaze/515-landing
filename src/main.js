@@ -38,7 +38,7 @@ function startClock() {
   setInterval(update, 1000)
 }
 
-// Heading animations for Instrument theme
+// Heading animations for Instrument/Poster theme
 function initHeadingAnimations(theme) {
   const elements = document.querySelectorAll('.theme-display-heading, .hero-center-title h1');
   elements.forEach(el => {
@@ -61,6 +61,24 @@ function initHeadingAnimations(theme) {
           }
         }
       );
+    } else if (theme === 'poster') {
+      gsap.fromTo(el, 
+        {
+          x: '-100%',
+          clipPath: 'inset(0 100% 0 0)'
+        },
+        {
+          x: '0%',
+          clipPath: 'inset(0 0% 0 0)',
+          duration: 0.35,
+          ease: 'power4.inOut',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 90%',
+            toggleActions: 'play none none none'
+          }
+        }
+      );
     } else {
       gsap.set(el, { clearProps: 'all' });
     }
@@ -68,12 +86,12 @@ function initHeadingAnimations(theme) {
 }
 
 // Theme switcher logic
-// Theme switcher logic
 function initThemeToggle() {
   const toggleBtn = document.getElementById('theme-toggle');
   if (!toggleBtn) return;
 
   let retroScrollTriggers = [];
+  let posterNavTriggers = [];
 
   function initRetroWindowTriggers(theme) {
     retroScrollTriggers.forEach(st => st.kill());
@@ -100,6 +118,47 @@ function initThemeToggle() {
     }
   }
 
+  function initPosterNavTriggers(theme) {
+    posterNavTriggers.forEach(st => st.kill());
+    posterNavTriggers = [];
+
+    const nav = document.querySelector('.nav');
+    if (!nav) return;
+
+    if (theme === 'poster') {
+      const sections = [
+        { id: '#hero', color: 'white' },
+        { id: '#highlight', color: 'black' },
+        { id: '#services', color: 'white' },
+        { id: '.perks-section', color: 'black' },
+        { id: '#about', color: 'black' },
+        { id: '.projects-section', color: 'black' },
+        { id: '#contact', color: 'white' }
+      ];
+
+      sections.forEach(sec => {
+        const el = document.querySelector(sec.id);
+        if (!el) return;
+
+        const st = ScrollTrigger.create({
+          trigger: el,
+          start: 'top 56px',
+          end: 'bottom 56px',
+          onToggle: (self) => {
+            if (self.isActive) {
+              nav.setAttribute('data-poster-color', sec.color);
+            }
+          },
+          onEnter: () => nav.setAttribute('data-poster-color', sec.color),
+          onEnterBack: () => nav.setAttribute('data-poster-color', sec.color)
+        });
+        posterNavTriggers.push(st);
+      });
+    } else {
+      nav.removeAttribute('data-poster-color');
+    }
+  }
+
   function updateButtonAndLabels(theme) {
     if (theme === 'instrument') {
       toggleBtn.textContent = '[ MODE: INSTRUMENT ]';
@@ -107,6 +166,8 @@ function initThemeToggle() {
       toggleBtn.textContent = '[ MODE: BRUTALIST ]';
     } else if (theme === 'retro') {
       toggleBtn.textContent = '[ MODE: RETRO OS ]';
+    } else if (theme === 'poster') {
+      toggleBtn.textContent = '[ MODE: POSTER SYSTEM ]';
     } else {
       toggleBtn.textContent = '[ MODE: STANDARD ]';
     }
@@ -131,7 +192,7 @@ function initThemeToggle() {
       if (theme === 'instrument') {
         const num = sectionNumbers[cleanText] || '01';
         label.innerHTML = `<span class="section-marker"></span><span class="section-num">[${num}]</span><span class="section-text">${cleanText.toUpperCase().replace(/\s+/g, '_')}</span>`;
-      } else if (theme === 'brutalist') {
+      } else if (theme === 'brutalist' || theme === 'poster') {
         label.textContent = cleanText.toUpperCase();
       } else if (theme === 'retro') {
         label.textContent = `[${cleanText}]`;
@@ -149,6 +210,8 @@ function initThemeToggle() {
         tagline.textContent = '515 HOUSE SPEC SHEET // CREATIVE AGENCY // 3P';
       } else if (theme === 'retro') {
         tagline.textContent = 'SYSTEM ACTIVE: 3P_CORE_AGENCY';
+      } else if (theme === 'poster') {
+        tagline.textContent = 'CREATIVE AGENCY / THREE PEOPLE';
       } else {
         tagline.textContent = 'Creative agency. Three people.';
       }
@@ -167,6 +230,9 @@ function initThemeToggle() {
       } else if (theme === 'retro') {
         aboutLeft.textContent = 'SYS_01';
         aboutRight.textContent = 'SYS_02';
+      } else if (theme === 'poster') {
+        aboutLeft.textContent = 'THREE';
+        aboutRight.textContent = 'PEOPLE';
       } else {
         aboutLeft.textContent = 'THREE';
         aboutRight.textContent = 'PEOPLE';
@@ -191,15 +257,29 @@ function initThemeToggle() {
         lbl.textContent = standard.toUpperCase() + ' SPEC';
       } else if (theme === 'retro') {
         lbl.textContent = retroServiceNames[standard] || standard.toUpperCase();
+      } else if (theme === 'poster') {
+        lbl.textContent = standard.toUpperCase();
       } else {
         lbl.textContent = standard;
       }
     });
 
+    // Dynamic submit button label
+    const submitBtn = document.querySelector('.form-submit');
+    if (submitBtn) {
+      if (theme === 'poster') {
+        submitBtn.textContent = 'Send it →';
+      } else {
+        submitBtn.textContent = 'Send it';
+      }
+    }
+
     // Trigger GSAP display heading animations
     initHeadingAnimations(theme);
     // Initialize viewport triggers for retro windows
     initRetroWindowTriggers(theme);
+    // Initialize scrollTriggers for poster navigation transparent mode
+    initPosterNavTriggers(theme);
   }
 
   // Initialize button state
@@ -210,6 +290,8 @@ function initThemeToggle() {
     currentTheme = 'brutalist';
   } else if (document.documentElement.classList.contains('theme-retro')) {
     currentTheme = 'retro';
+  } else if (document.documentElement.classList.contains('theme-poster')) {
+    currentTheme = 'poster';
   }
   updateButtonAndLabels(currentTheme);
 
@@ -222,16 +304,20 @@ function initThemeToggle() {
     } else if (currentTheme === 'brutalist') {
       nextTheme = 'retro';
     } else if (currentTheme === 'retro') {
+      nextTheme = 'poster';
+    } else if (currentTheme === 'poster') {
       nextTheme = 'standard';
     }
     
-    document.documentElement.classList.remove('theme-instrument', 'theme-brutalist', 'theme-retro');
+    document.documentElement.classList.remove('theme-instrument', 'theme-brutalist', 'theme-retro', 'theme-poster');
     if (nextTheme === 'instrument') {
       document.documentElement.classList.add('theme-instrument');
     } else if (nextTheme === 'brutalist') {
       document.documentElement.classList.add('theme-brutalist');
     } else if (nextTheme === 'retro') {
       document.documentElement.classList.add('theme-retro');
+    } else if (nextTheme === 'poster') {
+      document.documentElement.classList.add('theme-poster');
     }
     
     currentTheme = nextTheme;
@@ -244,6 +330,7 @@ function initThemeToggle() {
     }, 100);
   });
 }
+
 
 // Init everything
 document.addEventListener('DOMContentLoaded', () => {

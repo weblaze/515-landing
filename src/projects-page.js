@@ -32,34 +32,60 @@ function render() {
     return catMatch && typeMatch
   })
 
+  const isPoster = (document.documentElement.classList.contains('theme-poster') || localStorage.getItem('theme') === 'poster');
+
+  if (isPoster && filtered.length > 0) {
+    const headerRow = document.createElement('div')
+    headerRow.className = 'project-table-header'
+    headerRow.innerHTML = `
+      <span class="col-num">#</span>
+      <span class="col-name">Project</span>
+      <span class="col-client">Client</span>
+      <span class="col-type">Type</span>
+      <span class="col-year">Year</span>
+    `
+    list.appendChild(headerRow)
+  }
+
   filtered.forEach((project, i) => {
     const row = document.createElement('a')
-    row.className = 'project-row'
     row.href = '#'
     row.setAttribute('data-cursor-view', '')
 
-    const hasCover = project.cover && project.cover !== 'null'
-    const gradient = gradients[i % gradients.length]
+    if (isPoster) {
+      row.className = 'project-row poster-table-row'
+      row.innerHTML = `
+        <span class="col-num">${String(i + 1).padStart(2, '0')}</span>
+        <h2 class="col-name">${project.title}</h2>
+        <span class="col-client">${project.category}</span>
+        <span class="col-type">${project.type}</span>
+        <span class="col-year">${project.year}</span>
+      `
+    } else {
+      row.className = 'project-row'
+      const hasCover = project.cover && project.cover !== 'null'
+      const gradient = gradients[i % gradients.length]
 
-    row.innerHTML = `
-      <div class="project-row-left">
-        <span class="project-row-initial">${project.title[0]}</span>
-        <div class="project-row-meta">
-          <span class="project-row-category" data-category="${project.category}">${project.category}</span>
-          <span class="project-row-year">${project.year}</span>
+      row.innerHTML = `
+        <div class="project-row-left">
+          <span class="project-row-initial">${project.title[0]}</span>
+          <div class="project-row-meta">
+            <span class="project-row-category" data-category="${project.category}">${project.category}</span>
+            <span class="project-row-year">${project.year}</span>
+          </div>
         </div>
-      </div>
-      <div class="project-row-center">
-        <h2 class="project-row-title">${project.title}</h2>
-        <p class="project-row-desc">${project.description}</p>
-      </div>
-      <div class="project-row-right">
-        <div class="project-row-thumb" style="${hasCover ? '' : `background: ${gradient}`}">
-          ${hasCover ? `<img src="${project.cover}" alt="${project.title}" loading="lazy" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">` : ''}
+        <div class="project-row-center">
+          <h2 class="project-row-title">${project.title}</h2>
+          <p class="project-row-desc">${project.description}</p>
         </div>
-        <span class="project-row-cta">Discover the project ↗</span>
-      </div>
-    `
+        <div class="project-row-right">
+          <div class="project-row-thumb" style="${hasCover ? '' : `background: ${gradient}`}">
+            ${hasCover ? `<img src="${project.cover}" alt="${project.title}" loading="lazy" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">` : ''}
+          </div>
+          <span class="project-row-cta">Discover the project ↗</span>
+        </div>
+      `
+    }
     list.appendChild(row)
   })
 }
@@ -89,6 +115,8 @@ function initThemeToggle() {
       toggleBtn.textContent = '[ MODE: BRUTALIST ]';
     } else if (theme === 'retro') {
       toggleBtn.textContent = '[ MODE: RETRO OS ]';
+    } else if (theme === 'poster') {
+      toggleBtn.textContent = '[ MODE: POSTER SYSTEM ]';
     } else {
       toggleBtn.textContent = '[ MODE: STANDARD ]';
     }
@@ -101,6 +129,8 @@ function initThemeToggle() {
         title.textContent = 'SPECIFICATION LIST';
       } else if (theme === 'retro') {
         title.textContent = 'FILE_INDEX.SYS';
+      } else if (theme === 'poster') {
+        title.textContent = 'ALL_WORK';
       } else {
         title.textContent = 'All Work';
       }
@@ -114,6 +144,8 @@ function initThemeToggle() {
     currentTheme = 'brutalist';
   } else if (document.documentElement.classList.contains('theme-retro')) {
     currentTheme = 'retro';
+  } else if (document.documentElement.classList.contains('theme-poster')) {
+    currentTheme = 'poster';
   }
   updateButtonAndLabels(currentTheme);
 
@@ -126,21 +158,26 @@ function initThemeToggle() {
     } else if (currentTheme === 'brutalist') {
       nextTheme = 'retro';
     } else if (currentTheme === 'retro') {
+      nextTheme = 'poster';
+    } else if (currentTheme === 'poster') {
       nextTheme = 'standard';
     }
     
-    document.documentElement.classList.remove('theme-instrument', 'theme-brutalist', 'theme-retro');
+    document.documentElement.classList.remove('theme-instrument', 'theme-brutalist', 'theme-retro', 'theme-poster');
     if (nextTheme === 'instrument') {
       document.documentElement.classList.add('theme-instrument');
     } else if (nextTheme === 'brutalist') {
       document.documentElement.classList.add('theme-brutalist');
     } else if (nextTheme === 'retro') {
       document.documentElement.classList.add('theme-retro');
+    } else if (nextTheme === 'poster') {
+      document.documentElement.classList.add('theme-poster');
     }
     
     currentTheme = nextTheme;
     localStorage.setItem('theme', currentTheme);
     updateButtonAndLabels(currentTheme);
+    render();
   });
 }
 

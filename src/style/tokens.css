@@ -170,7 +170,7 @@ html.theme-retro {
   --accent-teal:    #6bb8c4;      /* panel fills */
   --accent-phosphor:#7acc7a;      /* terminal green, used very sparingly */
 
-  --border:         #1a1a1a;      /* black window chrome border */
+  --border:         #1a1a2e;      /* black window chrome border */
   --border-teal:    #3a8894;      /* teal panel border */
   --window-chrome:  #2a2a2a;      /* title bar background */
 
@@ -201,7 +201,50 @@ html.theme-retro {
   --overlay-gradient: none !important;
 }
 
+html.theme-poster {
+  /* Fonts */
+  --font-display: 'Anton', 'Bebas Neue', sans-serif;
+  --font-body: 'Inter', 'Helvetica Neue', sans-serif;
 
+  /* Color Tokens - Pantone-flat */
+  --bg-primary:     #f0ede8;      /* off-white base — the neutral ground */
+  --bg-black:       #0a0a0a;      /* section fill */
+  --bg-blue:        #0028f0;      /* electric blue — hero section fill */
+  --bg-red:         #e8180a;      /* full red — CTA/closing section fill */
 
+  --text-primary:   #0a0a0a;      /* black on white/blue */
+  --text-white:     #f0ede8;      /* off-white on black/blue/red */
+  --text-red:       #e8180a;      /* red type on white or black */
+  --text-blue:      #0028f0;      /* blue type on white or black */
 
+  --accent-orange:  #ff4d00;      /* interruption color — small cards, active row */
 
+  --border:         #0a0a0a;      /* black, 1px */
+  --border-light:   #d4d0c8;      /* light rule on white sections */
+  --border-strong:  #0a0a0a;
+
+  /* Layout & Spacing */
+  --radius-card:    0px !important;
+  --radius-media:   0px !important;
+  --radius-col:     0px !important;
+  --radius-pill:    0px !important;
+  --radius-sm:      0px !important;
+  --radius-ball:    0px !important;
+
+  --gap-sm:         12px;
+  --gap-md:         24px;
+  --gap-lg:         64px;
+  --gap-xl:         120px;
+
+  /* Transitions Overrides (aggressive, fast) */
+  --ease-spring:     cubic-bezier(0.87, 0, 0.13, 1);
+  --duration-fast:   0.15s;
+  --duration-medium: 0.35s;
+  --duration-slow:   0.35s;
+
+  /* SVG Noise */
+  --color-grain-opacity: 0.035;
+
+  /* Gradient Overlay */
+  --overlay-gradient: none !important;
+}
