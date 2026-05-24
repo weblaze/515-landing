@@ -10,7 +10,8 @@ import './style/sections/contact.css'
 import './style/sections/footer.css'
 
 import { initCursor } from './modules/cursor.js'
-import { initHeroWebGL } from './modules/hero-webgl.js'
+import { initHeroV3 } from './modules/hero-v3.js'
+// import { initLegacyHero } from './modules/hero-legacy.js' // ← legacy
 import { initHighlight } from './modules/highlight-grid.js'
 import { initServices } from './modules/services-columns.js'
 import { initPerks } from './modules/perks-stack.js'
@@ -338,7 +339,12 @@ document.addEventListener('DOMContentLoaded', () => {
   initThemeToggle()
   initCursor()
 
-  try { initHeroWebGL() } catch (e) { console.warn('WebGL init failed:', e) }
+  try {
+    initHeroV3()
+    // initLegacyHero() // ← legacy
+  } catch (e) {
+    console.warn('Hero init failed:', e)
+  }
 
   initHighlight()
   initServices()

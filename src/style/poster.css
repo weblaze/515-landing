@@ -196,6 +196,23 @@ html.theme-poster #hero::after {
   display: none !important;
 }
 
+/* Pretext Grid overrides under Poster theme */
+html.theme-poster .hero-v3 {
+  background-color: var(--bg-blue) !important;
+  padding-left: 0 !important;
+}
+html.theme-poster .hero-cell {
+  border-color: rgba(240, 237, 232, 0.15) !important;
+}
+html.theme-poster .hero-word {
+  color: var(--text-white) !important;
+}
+html.theme-poster .hero-word[data-cell-text="515"],
+html.theme-poster .hero-word[data-cell-text="HOUSE"] {
+  color: var(--text-red) !important;
+}
+
+
 /* --- Highlight Projects Grid --- */
 html.theme-poster .highlight-grid {
   padding-left: 0 !important;

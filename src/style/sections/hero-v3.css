@@ -1,0 +1,99 @@
+/* Hero V3 — Physics-Driven Typographic Grid */
+.hero-v3 {
+  width: 100vw;
+  height: 100vh;
+  background: var(--bg-primary);
+  overflow: hidden;
+  position: relative;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  width: 100%;
+  height: 100%;
+  padding: var(--size-nav-height) 24px 24px 24px; /* offset top navigation height */
+  gap: 1px;
+  background: var(--border); /* 1px grid lines between cells */
+  box-sizing: border-box;
+  transition: opacity var(--duration-medium) var(--ease-out-expo);
+}
+
+.hero-grid.hidden-scaffold {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.hero-sandbox {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 2;
+  box-sizing: border-box;
+}
+
+.hero-cell {
+  position: relative;
+  overflow: visible; /* allow words to spill out during active physics movements */
+  background: var(--bg-primary);
+  will-change: transform;
+  box-sizing: border-box;
+}
+
+/* Column spans */
+.span-col-2  { grid-column: span 2;  }
+.span-col-3  { grid-column: span 3;  }
+.span-col-4  { grid-column: span 4;  }
+.span-col-5  { grid-column: span 5;  }
+.span-col-7  { grid-column: span 7;  }
+.span-col-8  { grid-column: span 8;  }
+.span-col-12 { grid-column: span 12; }
+
+/* Row spans */
+.span-row-1  { grid-row: span 1; }
+.span-row-2  { grid-row: span 2; }
+.span-row-4  { grid-row: span 4; }
+
+.hero-word {
+  position: absolute;
+  display: block;
+  white-space: nowrap;
+  color: var(--text-primary);
+  line-height: 1;
+  will-change: transform;
+  pointer-events: none; /* cursor events pass through to section container */
+  transition: color var(--duration-fast) var(--ease-out-expo);
+}
+
+/* Hide standard layout components if they remain in DOM */
+.hero-v3 #hero-canvas,
+.hero-v3 .hero-image,
+.hero-v3 .hero-center-title,
+.hero-v3 .hero-bottom-left,
+.hero-v3 .hero-bottom-right {
+  display: none !important;
+}
+
+/* Responsive mobile adjustments */
+@media (max-width: 768px) {
+  .hero-grid {
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(12, 1fr);
+    padding: var(--size-nav-height) 12px 12px 12px;
+  }
+
+  .span-col-2  { grid-column: span 2; }
+  .span-col-3  { grid-column: span 3; }
+  .span-col-4  { grid-column: span 3; }
+  .span-col-5  { grid-column: span 6; }
+  .span-col-7  { grid-column: span 6; }
+  .span-col-8  { grid-column: span 6; }
+  .span-col-12 { grid-column: span 6; }
+
+  .span-row-4  { grid-row: span 2; }
+}

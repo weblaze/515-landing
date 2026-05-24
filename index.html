@@ -35,17 +35,84 @@
   </nav>
 
   <!-- Section 01 — Hero -->
-  <section id="hero">
-    <canvas id="hero-canvas"></canvas>
-    <img class="hero-image" src="/hero.webp" alt="515 House" data-hero-src="/hero.webp">
-    <div class="hero-center-title halation-text">
-      <h1>515<br>HOUSE</h1>
-    </div>
-    <div class="hero-bottom-left">
-      <span class="hero-tagline">Creative agency. Three people.</span>
-    </div>
-    <div class="hero-bottom-right">
-      <span class="hero-scroll-hint">[ Scroll ]</span>
+  <!-- LEGACY HERO: swap import in main.js to hero-legacy.js to restore WebGL ripple hero -->
+  <section id="hero" class="hero-v3">
+    <div class="hero-grid">
+      <!-- Row 1-4: Massive wordmark -->
+      <div class="hero-cell span-col-5 span-row-4"
+           data-text="515" data-size="180" data-profile="display_large"
+           data-font="display"></div>
+
+      <div class="hero-cell span-col-7 span-row-2"
+           data-text="HOUSE" data-size="140" data-profile="display_large"
+           data-font="display"></div>
+
+      <!-- Row 1-2 right: descriptor stack -->
+      <div class="hero-cell span-col-3 span-row-1"
+           data-text="Creative Agency" data-size="13"
+           data-profile="mono_label" data-font="mono"></div>
+
+      <div class="hero-cell span-col-4 span-row-1"
+           data-text="Gurugram India" data-size="13"
+           data-profile="mono_label" data-font="mono"></div>
+
+      <!-- Row 3-4 right: tagline -->
+      <div class="hero-cell span-col-7 span-row-1"
+           data-text="Three people. Every project." data-size="32"
+           data-profile="display_small" data-font="display"></div>
+
+      <!-- Row 5-6: Services -->
+      <div class="hero-cell span-col-4 span-row-2"
+           data-text="PHOTO_FILM" data-size="72"
+           data-profile="display_medium" data-font="display"></div>
+
+      <div class="hero-cell span-col-4 span-row-2"
+           data-text="DESIGN_BRAND" data-size="64"
+           data-profile="display_medium" data-font="display"></div>
+
+      <div class="hero-cell span-col-2 span-row-1"
+           data-text="EVENTS" data-size="48"
+           data-profile="display_small" data-font="display"></div>
+
+      <div class="hero-cell span-col-2 span-row-1"
+           data-text="UI_UX" data-size="48"
+           data-profile="display_small" data-font="display"></div>
+
+      <!-- Row 5 right: small facts -->
+      <div class="hero-cell span-col-2 span-row-1"
+           data-text="Est. 2024" data-size="11"
+           data-profile="mono_label" data-font="mono"></div>
+
+      <!-- Row 6: more services small -->
+      <div class="hero-cell span-col-2 span-row-1"
+           data-text="F&B" data-size="42"
+           data-profile="display_small" data-font="display"></div>
+
+      <!-- Row 7: full width descriptor -->
+      <div class="hero-cell span-col-8 span-row-1"
+           data-text="We scale when you need it. You talk to the person doing the work."
+           data-size="18" data-profile="display_small" data-font="mono"></div>
+
+      <div class="hero-cell span-col-2 span-row-1"
+           data-text="HOSPITALITY" data-size="28"
+           data-profile="display_small" data-font="display"></div>
+
+      <div class="hero-cell span-col-2 span-row-1"
+           data-text="AFTERMOVIES" data-size="24"
+           data-profile="display_small" data-font="display"></div>
+
+      <!-- Row 8: footer row -->
+      <div class="hero-cell span-col-4 span-row-1"
+           data-text="Gurugram, IN" data-size="11"
+           data-profile="mono_label" data-font="mono"></div>
+
+      <div class="hero-cell span-col-4 span-row-1 js-clock"
+           data-text="00:00:00" data-size="11"
+           data-profile="mono_label" data-font="mono"></div>
+
+      <div class="hero-cell span-col-4 span-row-1"
+           data-text="↓ Scroll to explore" data-size="11"
+           data-profile="mono_label" data-font="mono"></div>
     </div>
   </section>
 

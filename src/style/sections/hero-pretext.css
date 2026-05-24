@@ -1,0 +1,86 @@
+/* Pretext Typographic Grid Hero */
+.hero-pretext {
+  width: 100vw;
+  height: 100vh;
+  background: var(--bg-primary);
+  overflow: hidden;
+  position: relative;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  width: 100%;
+  height: 100%;
+  padding: var(--size-nav-height) 24px 24px 24px; /* offset top navigation height */
+  gap: 0;
+  box-sizing: border-box;
+}
+
+.hero-cell {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);  /* grid lines visible — poster aesthetic */
+  box-sizing: border-box;
+}
+
+/* Grid spans — col-span x row-span */
+.span-4-3 { grid-column: span 4; grid-row: span 3; }
+.span-4-2 { grid-column: span 4; grid-row: span 2; }
+.span-6-3 { grid-column: span 6; grid-row: span 3; }
+.span-6-2 { grid-column: span 6; grid-row: span 2; }
+.span-3-1 { grid-column: span 3; grid-row: span 1; }
+.span-5-1 { grid-column: span 5; grid-row: span 1; }
+.span-4-1 { grid-column: span 4; grid-row: span 1; }
+
+.hero-line {
+  position: absolute;
+  display: block;
+  white-space: nowrap;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  line-height: 0.92;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  /* Transition for smooth reflow */
+  transition: font-size 0.12s var(--ease-out-expo),
+              left 0.12s var(--ease-out-expo),
+              top 0.12s var(--ease-out-expo),
+              color var(--duration-fast) var(--ease-out-expo);
+  transform-origin: top left;
+}
+
+.hero-divider {
+  grid-column: 1 / -1;
+  grid-row: span 1;
+  border-top: 1px solid var(--border-strong);
+  align-self: center;
+}
+
+/* Hide standard WebGL hero DOM elements when in Pretext Hero */
+.hero-pretext #hero-canvas,
+.hero-pretext .hero-image,
+.hero-pretext .hero-center-title,
+.hero-pretext .hero-bottom-left,
+.hero-pretext .hero-bottom-right {
+  display: none !important;
+}
+
+/* Responsive Overrides */
+@media (max-width: 768px) {
+  .hero-grid {
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(12, 1fr);
+    padding: var(--size-nav-height) 12px 12px 12px;
+  }
+  
+  /* Mobile layout restructuring */
+  .span-4-3 { grid-column: span 6; grid-row: span 2; }
+  .span-4-2 { grid-column: span 6; grid-row: span 1; }
+  .span-6-3 { grid-column: span 6; grid-row: span 2; }
+  .span-6-2 { grid-column: span 6; grid-row: span 2; }
+  .span-3-1 { grid-column: span 3; grid-row: span 1; }
+  .span-5-1 { grid-column: span 3; grid-row: span 1; }
+  .span-4-1 { grid-column: span 2; grid-row: span 1; }
+}
