@@ -38,9 +38,217 @@ function startClock() {
   setInterval(update, 1000)
 }
 
+// Heading animations for Instrument theme
+function initHeadingAnimations(theme) {
+  const elements = document.querySelectorAll('.theme-display-heading, .hero-center-title h1');
+  elements.forEach(el => {
+    gsap.killTweensOf(el);
+    if (theme === 'instrument') {
+      gsap.fromTo(el, 
+        {
+          y: '80%',
+          clipPath: 'inset(0 0 100% 0)'
+        },
+        {
+          y: '0%',
+          clipPath: 'inset(0 0 0% 0)',
+          duration: 0.5,
+          ease: 'power4.out',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 90%',
+            toggleActions: 'play none none none'
+          }
+        }
+      );
+    } else {
+      gsap.set(el, { clearProps: 'all' });
+    }
+  });
+}
+
+// Theme switcher logic
+// Theme switcher logic
+function initThemeToggle() {
+  const toggleBtn = document.getElementById('theme-toggle');
+  if (!toggleBtn) return;
+
+  let retroScrollTriggers = [];
+
+  function initRetroWindowTriggers(theme) {
+    retroScrollTriggers.forEach(st => st.kill());
+    retroScrollTriggers = [];
+
+    const windows = document.querySelectorAll('#highlight, #services, #about, .projects-section');
+    if (theme === 'retro') {
+      windows.forEach(win => {
+        const st = ScrollTrigger.create({
+          trigger: win,
+          start: 'top 85%',
+          onEnter: () => win.classList.add('window-open'),
+          onLeaveBack: () => win.classList.remove('window-open')
+        });
+        retroScrollTriggers.push(st);
+
+        // Run check in case it's already visible in viewport
+        if (win.getBoundingClientRect().top < window.innerHeight * 0.85) {
+          win.classList.add('window-open');
+        }
+      });
+    } else {
+      windows.forEach(win => win.classList.remove('window-open'));
+    }
+  }
+
+  function updateButtonAndLabels(theme) {
+    if (theme === 'instrument') {
+      toggleBtn.textContent = '[ MODE: INSTRUMENT ]';
+    } else if (theme === 'brutalist') {
+      toggleBtn.textContent = '[ MODE: BRUTALIST ]';
+    } else if (theme === 'retro') {
+      toggleBtn.textContent = '[ MODE: RETRO OS ]';
+    } else {
+      toggleBtn.textContent = '[ MODE: STANDARD ]';
+    }
+    
+    // Dynamic section labels styling
+    const labels = document.querySelectorAll('.section-label');
+    const sectionNumbers = {
+      'Selected Work': '01',
+      'What We Do': '02',
+      'Why Us': '03',
+      'All Projects': '04',
+      'Get In Touch': '05'
+    };
+    
+    labels.forEach(label => {
+      if (!label.hasAttribute('data-original-text')) {
+        label.setAttribute('data-original-text', label.textContent);
+      }
+      const original = label.getAttribute('data-original-text');
+      const cleanText = original.replace(/[\[\]]/g, '').trim();
+      
+      if (theme === 'instrument') {
+        const num = sectionNumbers[cleanText] || '01';
+        label.innerHTML = `<span class="section-marker"></span><span class="section-num">[${num}]</span><span class="section-text">${cleanText.toUpperCase().replace(/\s+/g, '_')}</span>`;
+      } else if (theme === 'brutalist') {
+        label.textContent = cleanText.toUpperCase();
+      } else if (theme === 'retro') {
+        label.textContent = `[${cleanText}]`;
+      } else {
+        label.textContent = original;
+      }
+    });
+
+    // Dynamic tagline styling
+    const tagline = document.querySelector('.hero-tagline');
+    if (tagline) {
+      if (theme === 'instrument') {
+        tagline.textContent = 'CREATIVE AGENCY_ THREE PEOPLE';
+      } else if (theme === 'brutalist') {
+        tagline.textContent = '515 HOUSE SPEC SHEET // CREATIVE AGENCY // 3P';
+      } else if (theme === 'retro') {
+        tagline.textContent = 'SYSTEM ACTIVE: 3P_CORE_AGENCY';
+      } else {
+        tagline.textContent = 'Creative agency. Three people.';
+      }
+    }
+
+    // Dynamic about section words styling
+    const aboutLeft = document.querySelector('.about-word-left');
+    const aboutRight = document.querySelector('.about-word-right');
+    if (aboutLeft && aboutRight) {
+      if (theme === 'instrument') {
+        aboutLeft.textContent = 'THREE_';
+        aboutRight.textContent = 'PEOPLE';
+      } else if (theme === 'brutalist') {
+        aboutLeft.textContent = '3_STAFF';
+        aboutRight.textContent = '01_TEAM';
+      } else if (theme === 'retro') {
+        aboutLeft.textContent = 'SYS_01';
+        aboutRight.textContent = 'SYS_02';
+      } else {
+        aboutLeft.textContent = 'THREE';
+        aboutRight.textContent = 'PEOPLE';
+      }
+    }
+
+    // Dynamic services labels styling
+    const serviceLabels = document.querySelectorAll('.service-col-label');
+    const retroServiceNames = {
+      'Film': 'FILM.EXE',
+      'Design': 'DESIGN.SYS',
+      'Events': 'EVENTS.BAT',
+      'Food': 'FOOD.COM',
+      'Digital': 'DIGITAL.BIN'
+    };
+    serviceLabels.forEach(lbl => {
+      const standard = lbl.getAttribute('data-standard');
+      const instrument = lbl.getAttribute('data-instrument');
+      if (theme === 'instrument') {
+        lbl.textContent = instrument;
+      } else if (theme === 'brutalist') {
+        lbl.textContent = standard.toUpperCase() + ' SPEC';
+      } else if (theme === 'retro') {
+        lbl.textContent = retroServiceNames[standard] || standard.toUpperCase();
+      } else {
+        lbl.textContent = standard;
+      }
+    });
+
+    // Trigger GSAP display heading animations
+    initHeadingAnimations(theme);
+    // Initialize viewport triggers for retro windows
+    initRetroWindowTriggers(theme);
+  }
+
+  // Initialize button state
+  let currentTheme = 'standard';
+  if (document.documentElement.classList.contains('theme-instrument')) {
+    currentTheme = 'instrument';
+  } else if (document.documentElement.classList.contains('theme-brutalist')) {
+    currentTheme = 'brutalist';
+  } else if (document.documentElement.classList.contains('theme-retro')) {
+    currentTheme = 'retro';
+  }
+  updateButtonAndLabels(currentTheme);
+
+  toggleBtn.addEventListener('click', () => {
+    let nextTheme = 'standard';
+    if (currentTheme === 'standard') {
+      nextTheme = 'instrument';
+    } else if (currentTheme === 'instrument') {
+      nextTheme = 'brutalist';
+    } else if (currentTheme === 'brutalist') {
+      nextTheme = 'retro';
+    } else if (currentTheme === 'retro') {
+      nextTheme = 'standard';
+    }
+    
+    document.documentElement.classList.remove('theme-instrument', 'theme-brutalist', 'theme-retro');
+    if (nextTheme === 'instrument') {
+      document.documentElement.classList.add('theme-instrument');
+    } else if (nextTheme === 'brutalist') {
+      document.documentElement.classList.add('theme-brutalist');
+    } else if (nextTheme === 'retro') {
+      document.documentElement.classList.add('theme-retro');
+    }
+    
+    currentTheme = nextTheme;
+    localStorage.setItem('theme', currentTheme);
+    updateButtonAndLabels(currentTheme);
+    
+    // Refresh ScrollTrigger to accommodate layout adjustment/font changes
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 100);
+  });
+}
+
 // Init everything
 document.addEventListener('DOMContentLoaded', () => {
   startClock()
+  initThemeToggle()
   initCursor()
 
   try { initHeroWebGL() } catch (e) { console.warn('WebGL init failed:', e) }

@@ -30,7 +30,7 @@
   width: clamp(280px, 50vw, 640px);
   margin: 0 auto;
   overflow: hidden;
-  border-radius: 4px;
+  border-radius: var(--radius-media);
   aspect-ratio: 4/3;
   /* Placeholder gradient */
   background: linear-gradient(135deg, #1a1a1a 0%, #2a2020 40%, #1a2a2a 70%, #151515 100%);
@@ -44,6 +44,12 @@
   will-change: transform;
   filter: grayscale(20%);
 }
+
+/* Instrument Overrides */
+html.theme-instrument .about-photo-wrap {
+  background: var(--bg-secondary) !important;
+}
+
 
 .about-copy-wrap {
   margin-top: 32px;

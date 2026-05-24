@@ -12,35 +12,35 @@
   margin: 0 auto 16px;
   width: calc(100% - var(--size-section-pad-h) * 2);
   max-width: 1200px;
-  background: #111;
-  border-radius: 8px;
+  background: var(--bg-secondary);
+  border-radius: var(--radius-card);
   padding: 48px 56px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 320px;
-  border: 1px solid #1e1e1e;
+  border: 1px solid var(--border);
   transform-origin: top center;
   position: relative;
 }
 
 /* CTA card — covers the stacked deck */
 .perk-card-cta {
-  background: var(--color-black);
-  border: 1px solid #2a2a2a;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-strong);
   height: 320px;
   align-items: center;
   justify-content: flex-end;
   flex-direction: row;
   overflow: hidden;
   cursor: pointer;
-  transition: border-color 0.4s ease, background 0.4s ease;
+  transition: border-color var(--duration-fast) var(--ease-out-expo), background var(--duration-fast) var(--ease-out-expo);
   display: flex;
 }
 
 .perk-card-cta:hover {
-  border-color: #3a3a3a;
-  background: #0d0d0d;
+  border-color: var(--color-white);
+  background: var(--bg-tertiary);
 }
 
 .perk-cta-text {
@@ -74,12 +74,67 @@
 .perk-number {
   font-family: var(--font-body);
   font-size: 11px;
-  color: #2a2a2a;
+  color: var(--text-dim);
   letter-spacing: 0.1em;
   position: absolute;
   top: 24px;
   right: 24px;
 }
+
+/* Instrument Overrides */
+html.theme-instrument .perk-card:nth-child(1) {
+  background: var(--color-cream) !important;
+  border-color: var(--color-cream) !important;
+}
+html.theme-instrument .perk-card:nth-child(1) .perk-heading,
+html.theme-instrument .perk-card:nth-child(1) .perk-body,
+html.theme-instrument .perk-card:nth-child(1) .perk-number {
+  color: #0a0a0a !important;
+}
+
+html.theme-instrument .perk-card:nth-child(2) {
+  background: var(--color-green) !important;
+  border-color: var(--color-green) !important;
+}
+html.theme-instrument .perk-card:nth-child(2) .perk-heading,
+html.theme-instrument .perk-card:nth-child(2) .perk-body,
+html.theme-instrument .perk-card:nth-child(2) .perk-number {
+  color: var(--text-primary) !important;
+}
+
+html.theme-instrument .perk-card:nth-child(3) {
+  background: var(--color-yellow) !important;
+  border-color: var(--color-yellow) !important;
+}
+html.theme-instrument .perk-card:nth-child(3) .perk-heading,
+html.theme-instrument .perk-card:nth-child(3) .perk-body,
+html.theme-instrument .perk-card:nth-child(3) .perk-number {
+  color: #0a0a0a !important;
+}
+
+html.theme-instrument .perk-card:nth-child(4) {
+  background: var(--color-orange) !important;
+  border-color: var(--color-orange) !important;
+}
+html.theme-instrument .perk-card:nth-child(4) .perk-heading,
+html.theme-instrument .perk-card:nth-child(4) .perk-body,
+html.theme-instrument .perk-card:nth-child(4) .perk-number {
+  color: #0a0a0a !important;
+}
+
+html.theme-instrument .perk-card-cta {
+  background: var(--color-red) !important;
+  border-color: var(--color-red) !important;
+}
+html.theme-instrument .perk-card-cta:hover {
+  background: var(--color-red) !important;
+  border-color: var(--color-red) !important;
+}
+html.theme-instrument .perk-cta-text {
+  color: var(--text-primary) !important;
+}
+
+
 
 @media (max-width: 768px) {
   .perk-card {

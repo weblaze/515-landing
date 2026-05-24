@@ -13,8 +13,8 @@
   height: 520px;
   overflow: hidden;
   margin: 0 var(--size-section-pad-h);
-  border-radius: 6px;
-  border: 1px solid #1a1a1a;
+  border-radius: var(--radius-col);
+  border: 1px solid var(--border-strong);
 }
 
 /* --- Individual column --- */
@@ -27,7 +27,7 @@
   flex-direction: column;
   justify-content: flex-end;
   padding: 32px 28px;
-  background: var(--color-black);
+  background: var(--bg-primary);
 }
 
 /* Specular edge highlights — subtle light on the divider edges */
@@ -124,7 +124,7 @@
   width: 55%;
   max-width: 280px;
   aspect-ratio: 3/4;
-  border-radius: 10px;
+  border-radius: var(--radius-media);
   overflow: hidden;
   opacity: 0;
   transform: scale(0.92);
@@ -149,12 +149,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(10, 10, 10, 0.85) 0%,
-    rgba(10, 10, 10, 0.4) 40%,
-    transparent 70%
-  );
+  background: var(--overlay-gradient);
   z-index: 0;
   opacity: 0;
   transition: opacity 0.5s ease;
@@ -169,6 +164,74 @@
 .service-col.active {
   flex: 3;
 }
+
+/* Instrument Overrides */
+html.theme-instrument .service-col {
+  transition: flex 0.5s cubic-bezier(0.19, 1, 0.22, 1), background-color 0s !important;
+  border-right: 1px solid var(--border-strong) !important;
+}
+html.theme-instrument .service-col-edge-highlight {
+  display: none !important;
+}
+html.theme-instrument .service-col-media {
+  background: var(--bg-secondary) !important;
+}
+html.theme-instrument .service-col::after {
+  display: none !important;
+}
+html.theme-instrument .service-col-label {
+  color: var(--text-primary) !important;
+}
+html.theme-instrument .service-col-num {
+  color: var(--text-secondary) !important;
+  opacity: 0.15 !important;
+}
+html.theme-instrument .service-col-desc {
+  color: var(--text-secondary) !important;
+}
+
+/* Service column specific active backgrounds and text colors */
+html.theme-instrument .service-col-photo-film.active {
+  background: var(--color-orange) !important;
+}
+html.theme-instrument .service-col-photo-film.active .service-col-label,
+html.theme-instrument .service-col-photo-film.active .service-col-desc {
+  color: #0a0a0a !important;
+}
+
+html.theme-instrument .service-col-design-brand.active {
+  background: var(--color-yellow) !important;
+}
+html.theme-instrument .service-col-design-brand.active .service-col-label,
+html.theme-instrument .service-col-design-brand.active .service-col-desc {
+  color: #0a0a0a !important;
+}
+
+html.theme-instrument .service-col-events.active {
+  background: var(--color-green) !important;
+}
+html.theme-instrument .service-col-events.active .service-col-label,
+html.theme-instrument .service-col-events.active .service-col-desc {
+  color: var(--text-primary) !important;
+}
+
+html.theme-instrument .service-col-fnb-hosp.active {
+  background: var(--color-red) !important;
+}
+html.theme-instrument .service-col-fnb-hosp.active .service-col-label,
+html.theme-instrument .service-col-fnb-hosp.active .service-col-desc {
+  color: var(--text-primary) !important;
+}
+
+html.theme-instrument .service-col-uiux.active {
+  background: var(--color-blue) !important;
+}
+html.theme-instrument .service-col-uiux.active .service-col-label,
+html.theme-instrument .service-col-uiux.active .service-col-desc {
+  color: var(--text-primary) !important;
+}
+
+
 
 /* --- Responsive --- */
 @media (max-width: 900px) {

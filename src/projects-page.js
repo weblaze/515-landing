@@ -45,7 +45,7 @@ function render() {
       <div class="project-row-left">
         <span class="project-row-initial">${project.title[0]}</span>
         <div class="project-row-meta">
-          <span class="project-row-category">${project.category}</span>
+          <span class="project-row-category" data-category="${project.category}">${project.category}</span>
           <span class="project-row-year">${project.year}</span>
         </div>
       </div>
@@ -55,7 +55,7 @@ function render() {
       </div>
       <div class="project-row-right">
         <div class="project-row-thumb" style="${hasCover ? '' : `background: ${gradient}`}">
-          ${hasCover ? `<img src="${project.cover}" alt="${project.title}" loading="lazy" style="width:100%;height:100%;object-fit:cover;border-radius:3px;">` : ''}
+          ${hasCover ? `<img src="${project.cover}" alt="${project.title}" loading="lazy" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">` : ''}
         </div>
         <span class="project-row-cta">Discover the project ↗</span>
       </div>
@@ -77,8 +77,76 @@ function startClock() {
   setInterval(update, 1000)
 }
 
+// Theme switcher logic
+function initThemeToggle() {
+  const toggleBtn = document.getElementById('theme-toggle');
+  if (!toggleBtn) return;
+
+  function updateButtonAndLabels(theme) {
+    if (theme === 'instrument') {
+      toggleBtn.textContent = '[ MODE: INSTRUMENT ]';
+    } else if (theme === 'brutalist') {
+      toggleBtn.textContent = '[ MODE: BRUTALIST ]';
+    } else if (theme === 'retro') {
+      toggleBtn.textContent = '[ MODE: RETRO OS ]';
+    } else {
+      toggleBtn.textContent = '[ MODE: STANDARD ]';
+    }
+
+    const title = document.querySelector('.projects-page-title');
+    if (title) {
+      if (theme === 'instrument') {
+        title.textContent = 'ALL_WORK';
+      } else if (theme === 'brutalist') {
+        title.textContent = 'SPECIFICATION LIST';
+      } else if (theme === 'retro') {
+        title.textContent = 'FILE_INDEX.SYS';
+      } else {
+        title.textContent = 'All Work';
+      }
+    }
+  }
+
+  let currentTheme = 'standard';
+  if (document.documentElement.classList.contains('theme-instrument')) {
+    currentTheme = 'instrument';
+  } else if (document.documentElement.classList.contains('theme-brutalist')) {
+    currentTheme = 'brutalist';
+  } else if (document.documentElement.classList.contains('theme-retro')) {
+    currentTheme = 'retro';
+  }
+  updateButtonAndLabels(currentTheme);
+
+  toggleBtn.addEventListener('click', () => {
+    let nextTheme = 'standard';
+    if (currentTheme === 'standard') {
+      nextTheme = 'instrument';
+    } else if (currentTheme === 'instrument') {
+      nextTheme = 'brutalist';
+    } else if (currentTheme === 'brutalist') {
+      nextTheme = 'retro';
+    } else if (currentTheme === 'retro') {
+      nextTheme = 'standard';
+    }
+    
+    document.documentElement.classList.remove('theme-instrument', 'theme-brutalist', 'theme-retro');
+    if (nextTheme === 'instrument') {
+      document.documentElement.classList.add('theme-instrument');
+    } else if (nextTheme === 'brutalist') {
+      document.documentElement.classList.add('theme-brutalist');
+    } else if (nextTheme === 'retro') {
+      document.documentElement.classList.add('theme-retro');
+    }
+    
+    currentTheme = nextTheme;
+    localStorage.setItem('theme', currentTheme);
+    updateButtonAndLabels(currentTheme);
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   startClock()
+  initThemeToggle()
   initCursor()
 
   // Filter interaction
@@ -97,3 +165,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
   render()
 })
+

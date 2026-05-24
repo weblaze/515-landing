@@ -28,8 +28,8 @@
   width: 100%;
   aspect-ratio: 16/10;
   overflow: hidden;
-  border-radius: 4px;
-  background: #111;
+  border-radius: var(--radius-media);
+  background: var(--bg-secondary);
   position: relative;
 }
 
@@ -91,9 +91,10 @@
   color: var(--color-gray-dim);
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  border: 1px solid #2a2a2a;
+  border: 1px solid var(--border-strong);
   padding: 2px 8px;
-  border-radius: 100px;
+  border-radius: var(--radius-pill);
+  transition: all var(--duration-fast) var(--ease-out-expo);
 }
 
 .highlight-card-title {
@@ -110,6 +111,16 @@
   color: var(--color-gray-dim);
   margin: 0;
 }
+
+/* Instrument Overrides */
+html.theme-instrument .highlight-card-media {
+  background: var(--bg-secondary) !important;
+}
+html.theme-instrument .highlight-card-media img,
+html.theme-instrument .highlight-card-media video {
+  transition: transform var(--duration-medium) var(--ease-out-expo);
+}
+
 
 @media (max-width: 768px) {
   .highlight-grid {

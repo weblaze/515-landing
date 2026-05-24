@@ -1,7 +1,7 @@
 /* Contact Section */
 .contact-section {
   padding: var(--size-section-pad-v) var(--size-section-pad-h);
-  border-top: 1px solid #1e1e1e;
+  border-top: 1px solid var(--border);
 }
 
 .contact-inner {
@@ -69,7 +69,7 @@
 .form-field textarea {
   background: transparent;
   border: none;
-  border-bottom: 1px solid #2a2a2a;
+  border-bottom: 1px solid var(--border-strong);
   color: var(--color-white);
   font-family: var(--font-body);
   font-size: 15px;
@@ -86,7 +86,7 @@
 
 .form-field input::placeholder,
 .form-field textarea::placeholder {
-  color: #3a3a3a;
+  color: var(--text-dim);
 }
 
 .form-submit {
@@ -122,6 +122,40 @@
 
 .form-message.success { color: #4ade80; }
 .form-message.error { color: #f87171; }
+
+/* Instrument Overrides */
+html.theme-instrument .form-field input,
+html.theme-instrument .form-field textarea {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  padding: 10px 12px;
+  transition: border-color var(--duration-fast) var(--ease-out-expo);
+}
+
+html.theme-instrument .form-field input:focus,
+html.theme-instrument .form-field textarea:focus {
+  border-color: var(--accent-green);
+}
+
+html.theme-instrument .form-submit {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+  border-radius: 0;
+  padding: 12px 32px;
+  transform: none;
+  transition: border-color var(--duration-fast) var(--ease-out-expo), color var(--duration-fast) var(--ease-out-expo);
+}
+
+html.theme-instrument .form-submit:hover {
+  opacity: 1;
+  background: transparent;
+  border-color: var(--accent-green);
+  color: var(--accent-green);
+  transform: none;
+}
+
 
 @media (max-width: 768px) {
   .contact-inner {

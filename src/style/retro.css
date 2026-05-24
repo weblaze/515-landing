@@ -1,0 +1,636 @@
+/* ==========================================================================
+   THEME: DIRECTION 3B - RETRO OS (1998 Personal Computer OS Style)
+   ========================================================================== */
+
+html.theme-retro body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body) !important;
+}
+
+/* --- Global Monospace Overrides --- */
+html.theme-retro body,
+html.theme-retro h1,
+html.theme-retro h2,
+html.theme-retro h3,
+html.theme-retro h4,
+html.theme-retro p,
+html.theme-retro a,
+html.theme-retro span,
+html.theme-retro label,
+html.theme-retro input,
+html.theme-retro textarea,
+html.theme-retro button,
+html.theme-retro .nav-wordmark,
+html.theme-retro .theme-display-heading,
+html.theme-retro .about-word-left,
+html.theme-retro .about-word-right,
+html.theme-retro .project-row-initial {
+  font-family: var(--font-body) !important;
+  letter-spacing: 0.04em !important;
+}
+
+/* Hide original section labels since they move into the window chrome */
+html.theme-retro .section-label,
+html.theme-retro .instrument-legend-row,
+html.theme-retro .brutalist-marquee {
+  display: none !important;
+}
+
+/* --- Styled Scrollbar --- */
+html.theme-retro ::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+html.theme-retro ::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+  border-left: 1px solid var(--border);
+}
+html.theme-retro ::-webkit-scrollbar-thumb {
+  background: var(--accent-teal);
+  border: 2px solid var(--bg-primary);
+}
+html.theme-retro ::-webkit-scrollbar-thumb:hover {
+  background: var(--bg-dark);
+}
+
+/* --- Window Chrome Layout Element --- */
+.window-chrome {
+  display: none;
+}
+
+html.theme-retro .window-chrome {
+  display: grid !important;
+  grid-template-columns: 80px 1fr 80px;
+  align-items: center;
+  height: var(--chrome-height, 28px);
+  background: var(--window-chrome);
+  border-bottom: var(--border-width, 1px) solid var(--border);
+  padding: 0 12px;
+  box-sizing: border-box;
+}
+
+html.theme-retro .window-chrome-dots {
+  display: flex;
+  gap: 6px;
+}
+
+html.theme-retro .window-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent-red);
+  display: inline-block;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+html.theme-retro .window-chrome-title {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-on-dark);
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html.theme-retro .window-chrome-spacer {
+  /* Empty spacer to balance the grid layout */
+}
+
+/* --- Window Styling for Sections --- */
+html.theme-retro #highlight,
+html.theme-retro #services,
+html.theme-retro #about,
+html.theme-retro .projects-section {
+  margin: 0 var(--size-section-pad-h) var(--gap-lg) var(--size-section-pad-h);
+  border: var(--border-width, 1px) solid var(--border);
+  background: var(--bg-window);
+  border-radius: var(--radius, 4px);
+  box-shadow: 4px 4px 0 var(--border);
+  position: relative;
+  padding: 0 0 var(--gap-md) 0 !important;
+  opacity: 0;
+  transform: scale(0.97);
+  transition: opacity 0.35s ease-out, transform 0.35s ease-out;
+}
+
+/* Window entrances entrance states */
+html.theme-retro #highlight.window-open,
+html.theme-retro #services.window-open,
+html.theme-retro #about.window-open,
+html.theme-retro .projects-section.window-open {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Window Overlapping */
+html.theme-retro #highlight {
+  z-index: 10;
+}
+html.theme-retro #services {
+  z-index: 11;
+  margin-top: -40px !important;
+}
+html.theme-retro #about {
+  z-index: 12;
+  margin-top: -40px !important;
+}
+html.theme-retro .projects-section {
+  z-index: 13;
+  margin-top: -40px !important;
+}
+
+/* Inside window content adjustments */
+html.theme-retro .highlight-header,
+html.theme-retro .services-header,
+html.theme-retro .perks-header {
+  padding: var(--gap-md) var(--gap-md) 0 var(--gap-md) !important;
+  margin-bottom: var(--gap-md) !important;
+}
+
+/* Heading Sizes */
+html.theme-retro .theme-display-heading {
+  display: block !important;
+  font-size: clamp(48px, 6vw, 96px) !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+  text-transform: uppercase;
+  margin: 0 !important;
+  color: var(--text-primary) !important;
+  text-shadow: none !important;
+}
+
+/* --- Hero Section & Scanlines --- */
+html.theme-retro #hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 0, 0, 0.02) 2px,
+    rgba(0, 0, 0, 0.02) 4px
+  );
+  pointer-events: none;
+  z-index: 5;
+}
+html.theme-retro #hero::before {
+  display: none !important;
+}
+html.theme-retro .hero-center-title h1 {
+  font-size: clamp(72px, 12vw, 150px) !important;
+  line-height: 0.85 !important;
+  text-shadow: none !important;
+}
+html.theme-retro .hero-tagline,
+html.theme-retro .hero-scroll-hint {
+  color: var(--text-primary) !important;
+  opacity: 0.8;
+}
+
+/* --- Navigation --- */
+html.theme-retro .nav {
+  border-bottom: 1px solid var(--border) !important;
+  background: var(--bg-primary) !important;
+  mix-blend-mode: normal !important;
+}
+html.theme-retro .nav-wordmark {
+  color: var(--text-primary) !important;
+  font-weight: 700;
+  font-size: 20px;
+}
+html.theme-retro .nav-time {
+  color: var(--text-secondary) !important;
+  opacity: 1 !important;
+}
+
+/* --- Buttons (Windows 98 Style & CTA) --- */
+html.theme-retro button,
+html.theme-retro .theme-toggle-btn,
+html.theme-retro .filter-btn,
+html.theme-retro .back-link {
+  font-size: 13px !important;
+  font-weight: 500;
+  font-family: var(--font-body) !important;
+  text-transform: uppercase;
+  color: var(--text-primary) !important;
+  background: linear-gradient(to bottom, #d4d0c8, #b8b4aa) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #808080 !important;
+  border-radius: 0px !important;
+  padding: 6px 16px !important;
+  opacity: 1 !important;
+  cursor: pointer;
+  transition: none !important; /* Instant */
+}
+
+html.theme-retro button:hover,
+html.theme-retro .theme-toggle-btn:hover,
+html.theme-retro .filter-btn:hover,
+html.theme-retro .back-link:hover {
+  filter: invert(1);
+}
+
+html.theme-retro .filter-btn.active {
+  background: var(--bg-dark) !important;
+  color: var(--text-on-dark) !important;
+  box-shadow: inset -1px -1px 0 #ffffff, inset 1px 1px 0 #808080 !important;
+}
+
+/* CTA style buttons (Send it, View All Projects) */
+html.theme-retro .form-submit,
+html.theme-retro .view-all-link,
+html.theme-retro .project-row-cta {
+  background: var(--bg-dark) !important;
+  color: var(--text-on-dark) !important;
+  border: 2px solid var(--border) !important;
+  box-shadow: none !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  padding: 12px 28px !important;
+  border-radius: 0px !important;
+  transition: none !important; /* Instant */
+}
+
+html.theme-retro .form-submit:hover,
+html.theme-retro .view-all-link:hover {
+  background: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+  filter: none !important;
+}
+
+html.theme-retro .view-all-link::before,
+html.theme-retro .form-submit::before {
+  content: "● ";
+  color: var(--accent-red);
+  margin-right: 6px;
+}
+
+/* --- Tags (Pure Typographic Brackets) --- */
+html.theme-retro .tag-year,
+html.theme-retro .tag-category,
+html.theme-retro .masonry-year,
+html.theme-retro .masonry-type,
+html.theme-retro .project-row-category,
+html.theme-retro .project-row-year {
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  color: var(--text-secondary) !important;
+  text-transform: uppercase;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  box-shadow: none !important;
+  transition: none !important;
+}
+
+html.theme-retro .tag-year::before,
+html.theme-retro .tag-category::before,
+html.theme-retro .masonry-year::before,
+html.theme-retro .masonry-type::before,
+html.theme-retro .project-row-category::before,
+html.theme-retro .project-row-year::before {
+  content: "[";
+  color: var(--text-secondary);
+}
+
+html.theme-retro .tag-year::after,
+html.theme-retro .tag-category::after,
+html.theme-retro .masonry-year::after,
+html.theme-retro .masonry-type::after,
+html.theme-retro .project-row-category::after,
+html.theme-retro .project-row-year::after {
+  content: "]";
+  color: var(--text-secondary);
+}
+
+/* --- Image Filter for Old Monitor --- */
+html.theme-retro img {
+  filter: saturate(0.85) sepia(0.05) hue-rotate(80deg) !important;
+}
+
+/* --- Selected Work / Grid Cards --- */
+html.theme-retro .highlight-grid {
+  padding: 0 var(--gap-md) !important;
+  gap: var(--gap-md) !important;
+}
+html.theme-retro .highlight-card {
+  border: 1px solid var(--border);
+  background: var(--bg-window);
+  padding: var(--gap-sm);
+  border-radius: var(--radius);
+}
+html.theme-retro .highlight-card-media {
+  border-radius: var(--radius) !important;
+  border: 1px solid var(--border);
+}
+html.theme-retro .highlight-card-info {
+  padding: 12px 4px 4px 4px !important;
+}
+html.theme-retro .highlight-card-title {
+  color: var(--text-primary) !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+}
+html.theme-retro .highlight-card-desc {
+  color: var(--text-secondary) !important;
+  font-size: 13px !important;
+}
+
+/* --- Services Columns Overrides --- */
+html.theme-retro .services-columns {
+  margin: 0 var(--gap-md) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+  height: 540px !important;
+}
+html.theme-retro .service-col {
+  background: var(--bg-window) !important;
+  border-right: 1px solid var(--border) !important;
+  transition: flex 0.4s steps(8) !important;
+}
+html.theme-retro .service-col.active {
+  background: var(--bg-secondary) !important; /* Teal Panel Fill */
+  flex: 2.5 !important;
+}
+html.theme-retro .service-col::after {
+  display: none !important;
+}
+html.theme-retro .service-col-edge-highlight {
+  display: none !important;
+}
+html.theme-retro .service-col-num {
+  font-size: 56px !important;
+  color: rgba(26, 26, 26, 0.05) !important;
+  top: 16px !important;
+  left: 16px !important;
+}
+html.theme-retro .service-col-label {
+  color: var(--text-primary) !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+}
+html.theme-retro .service-col.active .service-col-label {
+  color: var(--text-on-teal) !important;
+  font-size: 24px !important;
+}
+html.theme-retro .service-col-desc {
+  color: var(--text-secondary) !important;
+  font-size: 13px !important;
+}
+html.theme-retro .service-col.active .service-col-desc {
+  color: var(--text-on-teal) !important;
+}
+html.theme-retro .service-col-media {
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+  aspect-ratio: 4/3 !important;
+  max-width: 260px !important;
+  width: 50% !important;
+  top: var(--gap-md) !important;
+  right: var(--gap-md) !important;
+}
+
+/* --- Progress Bars (Capacity Indicators) --- */
+.service-progress-bar {
+  display: none;
+}
+html.theme-retro .service-progress-bar {
+  display: block !important;
+  height: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-primary);
+  margin: 10px 0 16px 0;
+  overflow: hidden;
+}
+html.theme-retro .service-progress-fill {
+  height: 100%;
+  background: var(--accent-teal);
+  transition: width 0.5s ease-out;
+}
+html.theme-retro .service-col:nth-child(even) .service-progress-fill {
+  background: var(--accent-phosphor);
+}
+html.theme-retro .service-col.active .service-progress-bar {
+  background: var(--bg-dark);
+  border-color: var(--text-on-teal);
+}
+
+/* --- About Section --- */
+html.theme-retro .about-heading-wrap {
+  display: none !important; /* Hide splitting text for clean window */
+}
+html.theme-retro .about-photo-wrap {
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+  width: clamp(280px, 45vw, 560px) !important;
+}
+html.theme-retro .about-copy-wrap {
+  padding: 0 var(--gap-md);
+}
+html.theme-retro .about-copy {
+  color: var(--text-primary) !important;
+  font-size: 14px !important;
+  line-height: 1.6;
+}
+html.theme-retro .about-socials,
+html.theme-retro .about-socials a {
+  color: var(--text-secondary) !important;
+  font-weight: 700;
+}
+html.theme-retro .about-socials a:hover {
+  color: var(--accent-red) !important;
+  text-decoration: underline;
+}
+
+/* --- All Projects / Masonry (Home) --- */
+html.theme-retro .masonry-grid {
+  padding: 0 var(--gap-md) !important;
+}
+html.theme-retro .masonry-item {
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+  background: var(--bg-window) !important;
+  padding: var(--gap-sm) !important;
+  box-shadow: none !important;
+}
+html.theme-retro .masonry-media {
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+}
+html.theme-retro .masonry-meta {
+  padding-top: 12px !important;
+}
+html.theme-retro .masonry-title {
+  color: var(--text-primary) !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+}
+
+/* --- Contact Section --- */
+html.theme-retro .contact-section {
+  border-top: 1px solid var(--border) !important;
+  background: var(--bg-primary) !important;
+  padding: var(--gap-lg) var(--size-section-pad-h) !important;
+}
+html.theme-retro .contact-email {
+  color: var(--text-primary) !important;
+  font-weight: 700;
+  text-decoration: underline;
+}
+html.theme-retro .contact-insta {
+  color: var(--text-secondary) !important;
+}
+html.theme-retro .contact-form input,
+html.theme-retro .contact-form textarea {
+  border: 1px solid var(--border) !important;
+  background: var(--bg-window) !important;
+  padding: 10px 12px !important;
+  border-radius: 0px !important;
+  color: var(--text-primary) !important;
+  transition: none !important;
+}
+html.theme-retro .contact-form input:focus,
+html.theme-retro .contact-form textarea:focus {
+  background: var(--bg-primary) !important;
+  outline: 2px solid var(--accent-teal) !important;
+}
+
+/* --- Footer --- */
+html.theme-retro .footer {
+  background: var(--bg-primary) !important;
+  border-top: 1px solid var(--border) !important;
+  color: var(--text-primary) !important;
+}
+html.theme-retro .footer-statement {
+  display: none !important;
+}
+html.theme-retro .footer-statement-instrument {
+  display: block !important;
+  font-size: clamp(48px, 8vw, 100px) !important;
+  font-weight: 700 !important;
+  color: var(--text-primary) !important;
+  margin-bottom: 24px !important;
+  text-shadow: none !important;
+}
+html.theme-retro .footer-bottom {
+  border-top: 1px solid var(--border) !important;
+  padding-top: var(--gap-md) !important;
+  color: var(--text-secondary) !important;
+}
+html.theme-retro .footer-wordmark {
+  color: var(--text-primary) !important;
+  font-weight: 700;
+}
+
+/* --- Projects Subpage Overrides --- */
+html.theme-retro .projects-page {
+  margin: 70px var(--size-section-pad-h) var(--gap-lg) var(--size-section-pad-h) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius, 4px) !important;
+  background: var(--bg-window) !important;
+  box-shadow: 4px 4px 0 var(--border) !important;
+  padding: 0 0 var(--gap-md) 0 !important;
+  overflow: hidden;
+}
+html.theme-retro .projects-page-header {
+  padding: var(--gap-md) var(--gap-md) 0 var(--gap-md) !important;
+  margin-bottom: var(--gap-md) !important;
+  border-bottom: none !important;
+}
+html.theme-retro .projects-page-title {
+  font-size: clamp(36px, 5vw, 64px) !important;
+  font-weight: 700 !important;
+  color: var(--text-primary) !important;
+  margin: 12px 0 0 0 !important;
+}
+html.theme-retro .projects-filters {
+  padding: 0 var(--gap-md) var(--gap-md) var(--gap-md) !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+html.theme-retro .projects-list {
+  padding: 0 var(--gap-md) !important;
+}
+html.theme-retro .project-row {
+  border-bottom: 1px solid var(--border) !important;
+  transition: none !important;
+  padding: 16px 8px !important;
+}
+html.theme-retro .project-row:hover {
+  background: var(--bg-secondary) !important; /* Muted teal fill */
+}
+html.theme-retro .project-row:hover * {
+  color: var(--text-on-teal) !important;
+}
+html.theme-retro .project-row-title {
+  color: var(--text-primary) !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+}
+html.theme-retro .project-row-desc {
+  color: var(--text-secondary) !important;
+  font-size: 13px !important;
+}
+html.theme-retro .project-row-thumb {
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+}
+html.theme-retro .project-row-cta {
+  font-size: 11px !important;
+  padding: 4px 10px !important;
+  border-width: 1px !important;
+}
+
+/* --- Grain opacity custom rule for panels --- */
+html.theme-retro .service-col.active::before,
+html.theme-retro .project-row:hover::before {
+  opacity: 0.08 !important;
+}
+
+/* --- Custom Cursor --- */
+html.theme-retro .cursor-ball {
+  background: var(--accent-red) !important;
+  mix-blend-mode: normal !important;
+  border-radius: 0px !important;
+  width: 10px !important;
+  height: 10px !important;
+}
+html.theme-retro .cursor-pill {
+  background: var(--accent-teal) !important;
+  color: var(--text-on-teal) !important;
+  mix-blend-mode: normal !important;
+  border-radius: 0px !important;
+}
+
+/* --- Responsiveness Window Chrome Layout --- */
+@media (max-width: 900px) {
+  html.theme-retro #highlight,
+  html.theme-retro #services,
+  html.theme-retro #about,
+  html.theme-retro .projects-section {
+    margin: 0 16px var(--gap-md) 16px !important;
+  }
+  html.theme-retro .projects-page {
+    margin: 70px 16px var(--gap-md) 16px !important;
+  }
+  html.theme-retro .services-columns {
+    height: auto !important;
+  }
+  html.theme-retro .service-col {
+    border-right: none !important;
+    border-bottom: 1px solid var(--border) !important;
+    min-height: 80px !important;
+    padding: 16px var(--gap-md) !important;
+    transition: min-height 0.4s steps(8) !important;
+  }
+  html.theme-retro .service-col.active {
+    min-height: 320px !important;
+  }
+  html.theme-retro .service-col:last-child {
+    border-bottom: none !important;
+  }
+}

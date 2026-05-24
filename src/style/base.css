@@ -1,6 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,800;0,900;1,800;1,900&family=Bebas+Neue&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;0,800;1,300;1,400;1,500;1,700;1,800&display=swap');
 @import './tokens.css';
 @import './grain.css';
+@import './retro.css';
 
 /* Reset */
 *, *::before, *::after {
@@ -16,11 +17,12 @@ html {
 }
 
 body {
-  background: var(--color-black);
-  color: var(--color-white);
+  background: var(--bg-primary);
+  color: var(--text-primary);
   font-family: var(--font-body);
   overflow-x: hidden;
   line-height: 1.5;
+  transition: background var(--duration-medium) var(--ease-out-expo), color var(--duration-medium) var(--ease-out-expo);
 }
 
 a {
@@ -50,20 +52,20 @@ button {
   position: fixed;
   top: -8px; left: -8px;
   width: 16px; height: 16px;
-  border-radius: 50%;
+  border-radius: var(--radius-ball);
   background: var(--color-white);
   mix-blend-mode: difference;
   pointer-events: none;
   z-index: 10000;
   will-change: transform;
-  transition: width 0.3s var(--ease-spring), height 0.3s var(--ease-spring);
+  transition: width 0.3s var(--ease-spring), height 0.3s var(--ease-spring), border-radius var(--duration-medium) var(--ease-out-expo);
 }
 
 .cursor-pill {
   position: fixed;
   top: -12px; left: 0;
   padding: 5px 12px;
-  border-radius: 100px;
+  border-radius: var(--radius-pill);
   background: var(--color-white);
   color: var(--color-black);
   font-size: 11px;
@@ -75,7 +77,7 @@ button {
   z-index: 10000;
   opacity: 0;
   transform-origin: center;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease, border-radius var(--duration-medium) var(--ease-out-expo);
   will-change: transform;
 }
 
@@ -140,3 +142,1070 @@ button {
 @media (pointer: coarse) {
   .cursor-ball, .cursor-pill { display: none; }
 }
+
+/* ==========================================
+   THEME SWITCHER & INSTRUMENT OVERRIDES
+   ========================================== */
+
+.nav-controls {
+  display: flex;
+  align-items: center;
+}
+
+.theme-toggle-btn {
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-white);
+  opacity: 0.6;
+  padding: 6px 12px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  transition: all var(--duration-fast) var(--ease-out-expo);
+  margin-right: 24px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.theme-toggle-btn:hover {
+  opacity: 1;
+  border-color: var(--color-white);
+}
+
+/* Theme Display Headings and Utilities (hidden by default) */
+.theme-display-heading,
+.footer-statement-instrument {
+  display: none;
+}
+
+/* Instrument Typography & Layout overrides */
+html.theme-instrument body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+}
+
+/* Sizing constraints: strictly big (display) or small (body) */
+html.theme-instrument h1,
+html.theme-instrument .hero-center-title h1,
+html.theme-instrument .about-word-left,
+html.theme-instrument .about-word-right,
+html.theme-instrument .perk-cta-text,
+html.theme-instrument .project-row-initial {
+  font-family: var(--font-display) !important;
+  letter-spacing: -0.01em !important;
+  text-transform: uppercase !important;
+  color: var(--text-primary) !important;
+}
+
+/* Theme Display Heading styling - filling container width */
+html.theme-instrument .theme-display-heading,
+html.theme-instrument .footer-statement-instrument {
+  display: block !important;
+  font-family: var(--font-display) !important;
+  font-size: clamp(72px, 12vw, 200px) !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.01em !important;
+  text-transform: uppercase !important;
+  line-height: 0.85 !important;
+  margin-top: 16px;
+  margin-bottom: 40px;
+  width: 100%;
+  color: var(--text-primary) !important;
+}
+
+html.theme-instrument .footer-statement {
+  display: none !important;
+}
+
+/* Hero Center Single Line Style */
+html.theme-instrument .hero-center-title h1 {
+  font-size: clamp(72px, 12vw, 200px) !important;
+  line-height: 0.85 !important;
+  text-shadow: none !important;
+}
+html.theme-instrument .hero-center-title h1 br {
+  display: none !important;
+}
+
+/* Base text font overrides for Instrument theme */
+html.theme-instrument body,
+html.theme-instrument p,
+html.theme-instrument a,
+html.theme-instrument span,
+html.theme-instrument label,
+html.theme-instrument input,
+html.theme-instrument textarea,
+html.theme-instrument button {
+  font-family: var(--font-body) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Heading elements size overrides in Instrument theme (small mono uppercase labels) */
+html.theme-instrument .highlight-card-title,
+html.theme-instrument .project-row-title,
+html.theme-instrument .perk-heading,
+html.theme-instrument .nav-wordmark,
+html.theme-instrument .service-col-label {
+  font-family: var(--font-body) !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+html.theme-instrument .service-col.active .service-col-label {
+  font-size: clamp(20px, 2.4vw, 30px) !important;
+}
+
+/* Body / copy paragraphs sizing (clean and readable) */
+html.theme-instrument .about-copy,
+html.theme-instrument .perk-body {
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+html.theme-instrument .highlight-card-desc,
+html.theme-instrument .project-row-desc,
+html.theme-instrument .service-col-desc {
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+/* Small label/button text */
+html.theme-instrument .filter-btn,
+html.theme-instrument .view-all-link,
+html.theme-instrument .form-submit {
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+}
+
+html.theme-instrument .tag-year, 
+html.theme-instrument .tag-category,
+html.theme-instrument .masonry-type,
+html.theme-instrument .project-row-category,
+html.theme-instrument .project-row-year {
+  font-size: 10px !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+}
+
+/* Section labels specific bracket styling & color code markers */
+html.theme-instrument .section-label {
+  font-family: var(--font-body) !important;
+  font-size: 10px !important;
+  letter-spacing: 0.12em !important;
+  color: var(--text-secondary) !important;
+  text-transform: uppercase !important;
+  display: flex !important;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+html.theme-instrument .section-label .section-marker {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* Marker color assignments */
+html.theme-instrument #highlight .section-label .section-marker { background: var(--color-orange) !important; }
+html.theme-instrument #services .section-label .section-marker { background: var(--color-yellow) !important; }
+html.theme-instrument .perks-section .section-label .section-marker { background: var(--color-green) !important; }
+html.theme-instrument .projects-section .section-label .section-marker { background: var(--color-blue) !important; }
+html.theme-instrument #contact .section-label .section-marker { background: var(--color-red) !important; }
+
+/* Number color assignments */
+html.theme-instrument #highlight .section-label .section-num { color: var(--color-orange) !important; }
+html.theme-instrument #services .section-label .section-num { color: var(--color-yellow) !important; }
+html.theme-instrument .perks-section .section-label .section-num { color: var(--color-green) !important; }
+html.theme-instrument .projects-section .section-label .section-num { color: var(--color-blue) !important; }
+html.theme-instrument #contact .section-label .section-num { color: var(--color-red) !important; }
+
+html.theme-instrument .section-label .section-num {
+  margin-right: 6px;
+}
+
+html.theme-instrument .section-label .section-text {
+  color: var(--text-secondary) !important;
+}
+
+/* Zero radius enforcement for OD-11 styling */
+html.theme-instrument,
+html.theme-instrument * {
+  border-radius: 0px !important;
+}
+
+/* Horizontal rule colors */
+html.theme-instrument hr,
+html.theme-instrument .nav,
+html.theme-instrument .services-columns,
+html.theme-instrument .perk-card,
+html.theme-instrument .project-row,
+html.theme-instrument .contact-section,
+html.theme-instrument .footer {
+  border-color: var(--border-strong) !important;
+}
+
+/* Grid column markers boundary lines */
+html.theme-instrument .project-row-left {
+  border-right: 1px solid rgba(212, 201, 168, 0.3) !important;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-right: 16px;
+}
+html.theme-instrument .project-row-center {
+  border-right: 1px solid rgba(212, 201, 168, 0.3) !important;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-right: 16px;
+}
+
+/* Buttons style language */
+html.theme-instrument .form-submit,
+html.theme-instrument .view-all-link,
+html.theme-instrument .filter-btn {
+  border: 1px solid var(--border-strong) !important;
+  color: var(--text-primary) !important;
+  background: transparent !important;
+  padding: 10px 24px !important;
+  transition: border-color var(--duration-fast) var(--ease-out-expo) !important;
+}
+
+html.theme-instrument .form-submit:hover,
+html.theme-instrument .view-all-link:hover {
+  background: var(--color-orange) !important;
+  color: #0a0a0a !important;
+  border-color: var(--color-orange) !important;
+}
+
+/* Filter buttons dynamic hover/active fills */
+html.theme-instrument .filter-btn.active,
+html.theme-instrument .filter-btn:hover {
+  background: var(--color-orange) !important;
+  color: #0a0a0a !important;
+  border-color: var(--color-orange) !important;
+}
+html.theme-instrument .filter-btn[data-value="Automotive"].active,
+html.theme-instrument .filter-btn[data-value="Automotive"]:hover {
+  background: var(--color-orange) !important;
+  border-color: var(--color-orange) !important;
+  color: #0a0a0a !important;
+}
+html.theme-instrument .filter-btn[data-value="F&B"].active,
+html.theme-instrument .filter-btn[data-value="F&B"]:hover {
+  background: var(--color-green) !important;
+  border-color: var(--color-green) !important;
+  color: var(--text-primary) !important;
+}
+html.theme-instrument .filter-btn[data-value="Events"].active,
+html.theme-instrument .filter-btn[data-value="Events"]:hover {
+  background: var(--color-red) !important;
+  border-color: var(--color-red) !important;
+  color: var(--text-primary) !important;
+}
+html.theme-instrument .filter-btn[data-value="Tech"].active,
+html.theme-instrument .filter-btn[data-value="Tech"]:hover {
+  background: var(--color-blue) !important;
+  border-color: var(--color-blue) !important;
+  color: var(--text-primary) !important;
+}
+html.theme-instrument .filter-btn[data-value="Fashion"].active,
+html.theme-instrument .filter-btn[data-value="Fashion"]:hover {
+  background: var(--color-yellow) !important;
+  border-color: var(--color-yellow) !important;
+  color: #0a0a0a !important;
+}
+
+/* Highlight tag backgrounds dynamic coloring */
+html.theme-instrument .tag-category[data-category="Automotive"],
+html.theme-instrument .masonry-type[data-category="Automotive"],
+html.theme-instrument .project-row-category[data-category="Automotive"] {
+  background: var(--color-orange) !important;
+  color: #0a0a0a !important;
+  border-color: var(--color-orange) !important;
+}
+html.theme-instrument .tag-category[data-category="F&B"],
+html.theme-instrument .masonry-type[data-category="F&B"],
+html.theme-instrument .project-row-category[data-category="F&B"] {
+  background: var(--color-green) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--color-green) !important;
+}
+html.theme-instrument .tag-category[data-category="Events"],
+html.theme-instrument .masonry-type[data-category="Events"],
+html.theme-instrument .project-row-category[data-category="Events"] {
+  background: var(--color-red) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--color-red) !important;
+}
+html.theme-instrument .tag-category[data-category="Fashion"],
+html.theme-instrument .masonry-type[data-category="Fashion"],
+html.theme-instrument .project-row-category[data-category="Fashion"] {
+  background: var(--color-yellow) !important;
+  color: #0a0a0a !important;
+  border-color: var(--color-yellow) !important;
+}
+html.theme-instrument .tag-category[data-category="UI/UX"],
+html.theme-instrument .masonry-type[data-category="UI/UX"],
+html.theme-instrument .project-row-category[data-category="UI/UX"] {
+  background: var(--color-blue) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--color-blue) !important;
+}
+
+/* Halation overrides */
+html.theme-instrument .halation-text {
+  text-shadow: none !important;
+}
+
+/* Hero image edge glow only (no text halation) */
+html.theme-instrument #hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 120px rgba(232, 84, 26, 0.15) !important;
+  z-index: 2;
+}
+
+/* Nav & header bottom rule */
+html.theme-instrument .nav {
+  border-bottom: 1px solid var(--border-strong) !important;
+  background: var(--bg-primary) !important;
+  mix-blend-mode: normal !important;
+}
+html.theme-instrument .nav-wordmark {
+  color: var(--text-primary) !important;
+}
+html.theme-instrument .nav-time {
+  color: var(--text-secondary) !important;
+  opacity: 1 !important;
+}
+
+/* Theme toggle btn style inside Nav */
+html.theme-instrument .theme-toggle-btn {
+  border: 1px solid var(--border-strong) !important;
+  color: var(--text-primary) !important;
+  opacity: 1 !important;
+}
+html.theme-instrument .theme-toggle-btn:hover {
+  border-color: var(--color-orange) !important;
+  color: var(--color-orange) !important;
+}
+
+/* Custom Cursor styling */
+html.theme-instrument .cursor-ball {
+  background: var(--color-orange) !important;
+  mix-blend-mode: normal !important;
+}
+html.theme-instrument .cursor-pill {
+  background: var(--color-orange) !important;
+  color: #0a0a0a !important;
+  mix-blend-mode: normal !important;
+}
+
+/* Inline Media Heading */
+html.theme-instrument .inline-media-wrap {
+  display: inline-flex;
+  width: clamp(60px, 8vw, 120px);
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  vertical-align: middle;
+  position: relative;
+  top: -4px;
+  margin: 0 12px;
+}
+html.theme-instrument .inline-media-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ==========================================
+   THEME: DIRECTION 3A - BRUTALIST SPEC SHEET
+   ========================================== */
+
+html.theme-brutalist body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+}
+
+/* Fonts and Letter Spacings */
+html.theme-brutalist h1,
+html.theme-brutalist h2,
+html.theme-brutalist h3,
+html.theme-brutalist h4,
+html.theme-brutalist .hero-center-title h1,
+html.theme-brutalist .about-word-left,
+html.theme-brutalist .about-word-right,
+html.theme-brutalist .perk-cta-text,
+html.theme-brutalist .project-row-initial {
+  font-family: var(--font-display) !important;
+  letter-spacing: 0 !important;
+  text-transform: uppercase !important;
+  color: var(--text-primary) !important;
+}
+
+html.theme-brutalist body,
+html.theme-brutalist p,
+html.theme-brutalist a,
+html.theme-brutalist span,
+html.theme-brutalist label,
+html.theme-brutalist input,
+html.theme-brutalist textarea,
+html.theme-brutalist button {
+  font-family: var(--font-body) !important;
+}
+
+/* Layout & Borders */
+html.theme-brutalist,
+html.theme-brutalist * {
+  border-radius: 0px !important;
+}
+
+html.theme-brutalist hr,
+html.theme-brutalist .nav,
+html.theme-brutalist .services-columns,
+html.theme-brutalist .perk-card,
+html.theme-brutalist .project-row,
+html.theme-brutalist .contact-section,
+html.theme-brutalist .footer {
+  border-color: var(--border) !important;
+  border-width: 1.5px !important;
+}
+
+/* Section labels inside bordered strips */
+html.theme-brutalist .section-label {
+  display: flex !important;
+  align-items: center;
+  width: 100%;
+  height: 32px;
+  border-top: 1.5px solid var(--border);
+  border-bottom: 1.5px solid var(--border);
+  padding: 0 16px !important;
+  font-family: var(--font-body) !important;
+  font-size: 10px !important;
+  font-weight: 700;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  background: var(--bg-secondary) !important; /* amber/yellow background */
+  color: var(--text-on-yellow) !important;
+  margin-bottom: 32px !important;
+}
+
+html.theme-brutalist .section-label .section-marker,
+html.theme-brutalist .section-label .section-num {
+  display: none !important;
+}
+
+/* Display Headings */
+html.theme-brutalist .theme-display-heading {
+  display: block !important;
+  font-family: var(--font-display) !important;
+  font-size: clamp(48px, 8vw, 120px) !important;
+  font-weight: 900 !important;
+  letter-spacing: 0 !important;
+  text-transform: uppercase !important;
+  color: var(--text-primary) !important;
+  margin-top: 16px;
+  margin-bottom: 32px;
+  padding: 0 var(--size-section-pad-h);
+  line-height: 0.9 !important;
+}
+
+/* Navigation Overrides */
+html.theme-brutalist .nav {
+  border-bottom: 1.5px solid var(--border) !important;
+  background: var(--bg-primary) !important;
+  mix-blend-mode: normal !important;
+}
+
+html.theme-brutalist .nav-wordmark {
+  color: var(--text-primary) !important;
+  font-family: var(--font-display) !important;
+}
+
+html.theme-brutalist .nav-time {
+  color: var(--text-secondary) !important;
+  opacity: 1 !important;
+}
+
+/* Custom Cursors - Square and Mechanical */
+html.theme-brutalist .cursor-ball {
+  background: var(--accent-orange) !important;
+  width: 12px !important;
+  height: 12px !important;
+  border-radius: 0px !important;
+  mix-blend-mode: normal !important;
+}
+
+html.theme-brutalist .cursor-pill {
+  background: var(--accent-orange) !important;
+  color: var(--text-on-yellow) !important;
+  border-radius: 0px !important;
+  mix-blend-mode: normal !important;
+}
+
+/* Theme Toggle Button */
+html.theme-brutalist .theme-toggle-btn {
+  background: var(--bg-tertiary) !important;
+  color: var(--bg-primary) !important;
+  border: 1.5px solid var(--border) !important;
+  border-radius: 0px !important;
+  padding: 6px 12px !important;
+  opacity: 1 !important;
+  transition: none !important;
+}
+
+html.theme-brutalist .theme-toggle-btn:hover {
+  background: var(--bg-secondary) !important;
+  color: var(--text-on-yellow) !important;
+}
+
+/* Hero Section */
+html.theme-brutalist #hero::before {
+  content: "ハウス五一五";
+  position: absolute;
+  top: 15%;
+  right: 8%;
+  font-family: var(--font-display);
+  font-size: clamp(80px, 15vw, 240px);
+  font-weight: 900;
+  color: rgba(15, 15, 15, 0.04);
+  pointer-events: none;
+  z-index: 2;
+  writing-mode: vertical-rl;
+}
+
+html.theme-brutalist #hero::after {
+  display: none !important;
+}
+
+html.theme-brutalist .hero-center-title h1 {
+  font-size: clamp(72px, 14vw, 220px) !important;
+  line-height: 0.85 !important;
+  text-shadow: none !important;
+}
+
+html.theme-brutalist .hero-tagline,
+html.theme-brutalist .hero-scroll-hint {
+  color: var(--text-primary) !important;
+  opacity: 1 !important;
+}
+
+/* Highlight Projects Grid & Panel anatomy */
+html.theme-brutalist .highlight-card {
+  border: 1.5px solid var(--border) !important;
+  background: var(--bg-panel);
+  display: flex;
+  flex-direction: column;
+}
+
+html.theme-brutalist .highlight-card::before {
+  content: "SPECIFICATION PANEL // 515-" attr(data-index) " // CAT: " attr(data-category);
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 12px;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-bottom: 1.5px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--text-on-yellow);
+  order: -2;
+}
+
+html.theme-brutalist .highlight-card-media {
+  order: -1;
+  border-bottom: 1.5px solid var(--border) !important;
+  border-radius: 0px !important;
+}
+
+html.theme-brutalist .highlight-card-info {
+  padding: 16px !important;
+}
+
+html.theme-brutalist .highlight-card-title {
+  color: var(--text-primary) !important;
+  font-size: clamp(20px, 2.2vw, 30px) !important;
+}
+
+html.theme-brutalist .highlight-card-desc {
+  color: var(--text-secondary) !important;
+}
+
+/* Tags and Categories */
+html.theme-brutalist .tag-year,
+html.theme-brutalist .tag-category,
+html.theme-brutalist .masonry-year,
+html.theme-brutalist .masonry-type,
+html.theme-brutalist .project-row-category,
+html.theme-brutalist .project-row-year {
+  border: 1.5px solid var(--border) !important;
+  border-radius: 0px !important;
+  padding: 2px 8px !important;
+  background: var(--bg-panel) !important;
+  color: var(--text-primary) !important;
+  font-weight: 700 !important;
+  transition: none !important;
+}
+
+html.theme-brutalist .tag-category:hover,
+html.theme-brutalist .masonry-type:hover,
+html.theme-brutalist .project-row-category:hover {
+  background: var(--bg-secondary) !important;
+}
+
+/* Dynamic active color fill override for specific categories */
+html.theme-brutalist .tag-category[data-category],
+html.theme-brutalist .project-row-category[data-category] {
+  background: var(--bg-panel) !important;
+}
+html.theme-brutalist .tag-category[data-category]:hover,
+html.theme-brutalist .project-row-category[data-category]:hover {
+  background: var(--bg-secondary) !important;
+}
+
+/* Infinite Marquee Ticker */
+html.theme-brutalist .brutalist-marquee {
+  display: flex !important;
+  overflow: hidden;
+  width: 100vw;
+  background: var(--bg-secondary);
+  border-top: 1.5px solid var(--border);
+  border-bottom: 1.5px solid var(--border);
+  padding: 12px 0;
+  position: relative;
+  z-index: 10;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+html.theme-brutalist .marquee-inner {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 20s linear infinite;
+}
+
+html.theme-brutalist .marquee-inner span {
+  padding-right: 2rem;
+  font-family: var(--font-display);
+  font-size: clamp(18px, 2.5vw, 28px);
+  font-weight: 900;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+@keyframes marquee-scroll {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+/* Services Columns Overrides */
+html.theme-brutalist .services-columns {
+  counter-reset: service-counter;
+}
+
+html.theme-brutalist .service-col {
+  border-right: 1.5px solid var(--border) !important;
+  background: var(--bg-panel);
+  display: flex;
+  flex-direction: column;
+  padding: 0 !important;
+  justify-content: flex-start !important;
+  transition: flex 0.4s var(--ease-spring);
+}
+
+html.theme-brutalist .service-col::before {
+  counter-increment: service-counter;
+  content: "SERVICE DIVISION // 0" counter(service-counter);
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 16px;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-bottom: 1.5px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--text-on-yellow);
+  width: 100%;
+}
+
+html.theme-brutalist .service-col-edge-highlight,
+html.theme-brutalist .service-col-num {
+  display: none !important;
+}
+
+html.theme-brutalist .service-col-content {
+  margin: 0 !important;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-grow: 1;
+  z-index: 2;
+}
+
+html.theme-brutalist .service-col-label {
+  writing-mode: horizontal-tb !important;
+  transform: none !important;
+  font-family: var(--font-display) !important;
+  font-size: clamp(20px, 2.2vw, 30px) !important;
+  font-weight: 900 !important;
+  color: var(--text-primary) !important;
+  transition: none !important;
+}
+
+html.theme-brutalist .service-col.active .service-col-label {
+  font-size: clamp(20px, 2.2vw, 30px) !important;
+}
+
+html.theme-brutalist .service-col-desc {
+  opacity: 1 !important;
+  transform: none !important;
+  color: var(--text-secondary) !important;
+  font-size: 13px !important;
+  transition: none !important;
+}
+
+html.theme-brutalist .service-col-media {
+  position: relative !important;
+  top: auto !important;
+  right: auto !important;
+  width: 100% !important;
+  max-width: none !important;
+  aspect-ratio: 16/10 !important;
+  opacity: 1 !important;
+  transform: none !important;
+  border-top: 1.5px solid var(--border);
+  border-bottom: 1.5px solid var(--border);
+  transition: none !important;
+}
+
+html.theme-brutalist .service-col.active {
+  background: var(--bg-secondary) !important; /* Turns amber */
+}
+
+html.theme-brutalist .service-col.active .service-col-label,
+html.theme-brutalist .service-col.active .service-col-desc {
+  color: var(--text-on-yellow) !important;
+}
+
+html.theme-brutalist .service-col::after {
+  display: none !important;
+}
+
+html.theme-brutalist .instrument-legend-row {
+  display: none !important;
+}
+
+/* Perks Stack Cards */
+html.theme-brutalist .perks-cards {
+  counter-reset: perk-counter;
+}
+
+html.theme-brutalist .perk-card {
+  counter-increment: perk-counter;
+  border: 1.5px solid var(--border) !important;
+  background: var(--bg-panel);
+  display: flex;
+  flex-direction: column;
+  padding: 0 !important;
+  height: 320px !important;
+  justify-content: flex-start !important;
+}
+
+html.theme-brutalist .perk-card::before {
+  content: "PERK SPECIFICATION SHEET // 515-0" counter(perk-counter);
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 16px;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-bottom: 1.5px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--text-on-yellow);
+}
+
+html.theme-brutalist .perk-card .perk-number {
+  display: none !important;
+}
+
+html.theme-brutalist .perk-card .perk-heading {
+  padding: 24px 24px 12px;
+  margin: 0;
+  font-family: var(--font-display) !important;
+  color: var(--text-primary) !important;
+  font-size: clamp(20px, 2.2vw, 30px) !important;
+}
+
+html.theme-brutalist .perk-card .perk-body {
+  padding: 0 24px 24px;
+  margin: 0;
+  color: var(--text-secondary) !important;
+}
+
+html.theme-brutalist .perk-card-cta {
+  background: var(--bg-secondary) !important;
+  border: 1.5px solid var(--border) !important;
+  padding: 0 40px !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+html.theme-brutalist .perk-card-cta::before {
+  display: none !important;
+}
+
+html.theme-brutalist .perk-cta-text {
+  color: var(--text-on-yellow) !important;
+}
+
+/* About Section */
+html.theme-brutalist .about-photo-wrap {
+  border: 1.5px solid var(--border) !important;
+  background: var(--bg-panel) !important;
+}
+
+html.theme-brutalist .about-photo {
+  filter: none !important;
+}
+
+html.theme-brutalist .about-copy {
+  color: var(--text-primary) !important;
+}
+
+html.theme-brutalist .about-socials,
+html.theme-brutalist .about-socials a {
+  color: var(--text-secondary) !important;
+  font-weight: 700;
+}
+
+html.theme-brutalist .about-socials a:hover {
+  color: var(--accent-orange) !important;
+}
+
+/* Homepage Masonry List */
+html.theme-brutalist .masonry-item {
+  border: 1.5px solid var(--border) !important;
+  background: var(--bg-panel);
+  padding: 16px;
+  margin-bottom: 16px !important;
+  box-shadow: none !important;
+}
+
+html.theme-brutalist .masonry-media {
+  border: 1.5px solid var(--border) !important;
+}
+
+html.theme-brutalist .masonry-meta {
+  padding: 12px 0 0;
+}
+
+html.theme-brutalist .masonry-title {
+  color: var(--text-primary) !important;
+  font-weight: 700;
+}
+
+/* Buttons and Links - Black filled, mechanical hovers */
+html.theme-brutalist .form-submit,
+html.theme-brutalist .view-all-link,
+html.theme-brutalist .filter-btn {
+  background: var(--bg-tertiary) !important; /* Black */
+  color: var(--bg-primary) !important; /* Warm off-white */
+  border: 1.5px solid var(--border) !important;
+  padding: 12px 28px !important;
+  font-family: var(--font-body) !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  transition: none !important;
+}
+
+html.theme-brutalist .form-submit:hover,
+html.theme-brutalist .view-all-link:hover,
+html.theme-brutalist .filter-btn:hover,
+html.theme-brutalist .filter-btn.active {
+  background: var(--bg-secondary) !important; /* Yellow */
+  color: var(--text-on-yellow) !important; /* Black */
+  border-color: var(--border) !important;
+}
+
+/* CTA prefix orange dot */
+html.theme-brutalist .view-all-link::before,
+html.theme-brutalist .form-submit::before {
+  content: "● ";
+  color: var(--accent-orange);
+  margin-right: 8px;
+}
+
+html.theme-brutalist .view-all-link {
+  border-bottom: 1.5px solid var(--border) !important;
+  text-decoration: none !important;
+}
+
+/* Contact Form Inputs */
+html.theme-brutalist .form-field label {
+  color: var(--text-primary) !important;
+  font-weight: 700;
+}
+
+html.theme-brutalist .form-field input,
+html.theme-brutalist .form-field textarea {
+  background: var(--bg-panel) !important;
+  border: 1.5px solid var(--border) !important;
+  padding: 12px !important;
+  color: var(--text-primary) !important;
+  font-family: var(--font-body) !important;
+  transition: none !important;
+}
+
+html.theme-brutalist .form-field input:focus,
+html.theme-brutalist .form-field textarea:focus {
+  background: var(--bg-secondary) !important;
+  outline: none !important;
+}
+
+/* Projects Page Row Overrides */
+html.theme-brutalist .projects-page-header .back-link {
+  color: var(--text-primary) !important;
+  font-weight: 700;
+  border: 1.5px solid var(--border) !important;
+  background: var(--bg-panel);
+  padding: 6px 16px;
+}
+html.theme-brutalist .projects-page-header .back-link:hover {
+  background: var(--bg-secondary);
+}
+
+html.theme-brutalist .project-row {
+  display: grid !important;
+  grid-template-columns: 200px 1fr 280px !important;
+  border-top: 1.5px solid var(--border) !important;
+  border-bottom: none !important;
+  background: var(--bg-panel);
+  padding: 24px 16px !important;
+  gap: var(--gap-md) !important;
+  transition: none !important;
+}
+
+html.theme-brutalist .project-row:last-child {
+  border-bottom: 1.5px solid var(--border) !important;
+}
+
+html.theme-brutalist .project-row:hover {
+  background: var(--bg-secondary) !important;
+}
+
+html.theme-brutalist .project-row-initial {
+  font-family: var(--font-display) !important;
+  color: var(--text-primary) !important;
+  font-weight: 900 !important;
+}
+
+html.theme-brutalist .project-row-title {
+  font-family: var(--font-display) !important;
+  color: var(--text-primary) !important;
+}
+
+html.theme-brutalist .project-row-desc {
+  color: var(--text-secondary) !important;
+}
+
+html.theme-brutalist .project-row-thumb {
+  border: 1.5px solid var(--border) !important;
+  background: var(--bg-panel) !important;
+}
+
+html.theme-brutalist .project-row-cta {
+  color: var(--text-primary) !important;
+  font-weight: 700;
+}
+
+html.theme-brutalist .project-row-left {
+  border-right: 1.5px solid var(--border) !important;
+  padding-right: 16px;
+}
+
+html.theme-brutalist .project-row-center {
+  border-right: 1.5px solid var(--border) !important;
+  padding-right: 16px;
+}
+
+/* Halation/Atmosphere overrides */
+html.theme-brutalist .halation-text,
+html.theme-brutalist .footer-statement {
+  text-shadow: none !important;
+}
+
+html.theme-brutalist .footer-statement-instrument {
+  display: block !important;
+  font-family: var(--font-display) !important;
+  font-size: clamp(72px, 12vw, 200px) !important;
+  font-weight: 900 !important;
+  color: var(--text-primary) !important;
+  text-shadow: none !important;
+}
+
+html.theme-brutalist .footer-statement {
+  display: none !important;
+}
+
+html.theme-brutalist .footer-bottom,
+html.theme-brutalist .footer-wordmark {
+  color: var(--text-primary) !important;
+}
+
+html.theme-brutalist .footer-media-embed {
+  border: 1.5px solid var(--border) !important;
+}
+
+@media (max-width: 900px) {
+  html.theme-brutalist .service-col {
+    border-right: none !important;
+    border-bottom: 1.5px solid var(--border) !important;
+  }
+  html.theme-brutalist .service-col:last-child {
+    border-bottom: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  html.theme-brutalist .project-row {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  html.theme-brutalist .project-row-left,
+  html.theme-brutalist .project-row-center {
+    border-right: none !important;
+    padding-right: 0;
+  }
+}
+
+
+

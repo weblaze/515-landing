@@ -17,6 +17,8 @@ export function initHighlight() {
     const card = document.createElement('div')
     card.className = `highlight-card ${i % 3 === 2 ? 'full' : 'half'}`
     card.setAttribute('data-cursor-view', '')
+    card.setAttribute('data-category', project.category.toUpperCase())
+    card.setAttribute('data-index', String(i + 1).padStart(2, '0'))
 
     const hasCover = project.cover && project.cover !== 'null'
     const gradient = gradients[i % gradients.length]
@@ -31,7 +33,7 @@ export function initHighlight() {
       <div class="highlight-card-info">
         <div class="highlight-card-tags">
           <span class="tag-year">${project.year}</span>
-          <span class="tag-category">${project.category}</span>
+          <span class="tag-category" data-category="${project.category}">${project.category}</span>
         </div>
         <h3 class="highlight-card-title">${project.title}</h3>
         <p class="highlight-card-desc">${project.description}</p>

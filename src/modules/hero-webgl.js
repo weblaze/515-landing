@@ -14,7 +14,17 @@ export function initHeroWebGL() {
     dpr: Math.min(window.devicePixelRatio, 2) 
   })
   const gl = renderer.gl
-  gl.clearColor(0, 0, 0, 1)
+  
+  function clearWithThemeColor() {
+    const style = window.getComputedStyle(document.documentElement);
+    const bg = style.getPropertyValue('--bg-primary').trim();
+    let r = 10/255, g = 10/255, b = 10/255;
+    if (bg === '#0f0e0b') { r = 15/255; g = 14/255; b = 11/255; }
+    else if (bg === '#f5f3ef') { r = 245/255; g = 243/255; b = 239/255; }
+    gl.clearColor(r, g, b, 1);
+  }
+
+  clearWithThemeColor()
 
   // Main Image Texture
   const mainTexture = new Texture(gl, {
@@ -274,7 +284,7 @@ export function initHeroWebGL() {
     renderer.render({ scene: pointsMesh, target: target, clear: true });
 
     // 2. Render Main Shader to screen
-    gl.clearColor(0, 0, 0, 1);
+    clearWithThemeColor();
     renderer.render({ scene: mainMesh });
   }
 

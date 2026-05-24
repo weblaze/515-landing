@@ -29,10 +29,10 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 30% 50%, rgba(120, 80, 200, 0.15) 0%, transparent 60%),
-    radial-gradient(ellipse at 70% 40%, rgba(200, 120, 80, 0.1) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 80%, rgba(60, 140, 180, 0.08) 0%, transparent 50%),
-    linear-gradient(180deg, #0a0a0a 0%, #111 50%, #0a0a0a 100%);
+    radial-gradient(ellipse at 30% 50%, rgba(120, 80, 200, 0.07) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 40%, rgba(200, 120, 80, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(60, 140, 180, 0.04) 0%, transparent 50%),
+    linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
   z-index: 0;
 }
 

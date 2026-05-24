@@ -39,7 +39,7 @@ export function initProjectsMasonry() {
       </div>
       <div class="masonry-meta">
         <span class="masonry-year">${project.year}</span>
-        <span class="masonry-type">${project.type}</span>
+        <span class="masonry-type" data-category="${project.category}">${project.type}</span>
         <span class="masonry-title">${project.title}</span>
       </div>
     `

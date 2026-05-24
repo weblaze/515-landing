@@ -7,14 +7,37 @@
   <meta name="description" content="All work by 515 House. Photography, film, design, branding, events.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme') || 'standard';
+      if (savedTheme === 'instrument') {
+        document.documentElement.classList.add('theme-instrument');
+      } else if (savedTheme === 'brutalist') {
+        document.documentElement.classList.add('theme-brutalist');
+      } else if (savedTheme === 'retro') {
+        document.documentElement.classList.add('theme-retro');
+      }
+    })();
+  </script>
 </head>
 <body>
   <nav class="nav">
     <span class="nav-wordmark">515 House</span>
-    <span class="nav-time" id="nav-time"></span>
+    <div class="nav-controls">
+      <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme">[ MODE: STANDARD ]</button>
+      <span class="nav-time" id="nav-time"></span>
+    </div>
   </nav>
 
   <main class="projects-page">
+    <div class="window-chrome" aria-hidden="true">
+      <div class="window-chrome-dots">
+        <span class="window-dot"></span>
+        <span class="window-dot"></span>
+      </div>
+      <div class="window-chrome-title">[All Work]</div>
+      <div class="window-chrome-spacer"></div>
+    </div>
     <div class="projects-page-header">
       <a class="back-link" href="/">← Back</a>
       <h1 class="projects-page-title">All Work</h1>

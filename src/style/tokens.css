@@ -1,17 +1,44 @@
 :root {
+  /* Colors - Base/Default (Dark Theme) */
   --color-black: #0a0a0a;
   --color-white: #f0ede8;
   --color-gray-dim: #5a5a5a;
   --color-grain-opacity: 0.06;
   --color-halation: rgba(240, 237, 232, 0.07);
 
+  /* Fonts */
   --font-display: 'Bebas Neue', 'Impact', sans-serif;
   --font-body: 'Inter', 'Helvetica Neue', sans-serif;
 
+  /* Theme Colors */
+  --bg-primary: var(--color-black);
+  --bg-secondary: #111111;
+  --bg-tertiary: #141414;
+  --text-primary: var(--color-white);
+  --text-secondary: var(--color-gray-dim);
+  --text-dim: #333333;
+  --accent-orange: var(--color-white);
+  --accent-green: #1a5c3a;
+  --accent-cream: var(--color-white);
+  
+  /* Borders */
+  --border: #1e1e1e;
+  --border-strong: #2a2a2a;
+
+  /* Radii */
+  --radius-card: 8px;
+  --radius-media: 4px;
+  --radius-col: 6px;
+  --radius-pill: 100px;
+  --radius-sm: 3px;
+  --radius-ball: 50%;
+
+  /* Spacing */
   --size-nav-height: 56px;
   --size-section-pad-v: clamp(80px, 10vw, 140px);
   --size-section-pad-h: clamp(24px, 5vw, 80px);
 
+  /* Transitions */
   --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --duration-fast: 0.3s;
@@ -19,4 +46,162 @@
   --duration-slow: 1.2s;
 
   --grain-size: 180px;
+
+  /* Gradient Overlay */
+  --overlay-gradient: linear-gradient(to top, rgba(10, 10, 10, 0.85) 0%, rgba(10, 10, 10, 0.4) 40%, transparent 70%);
 }
+
+html.theme-instrument {
+  /* Colors - Direction 1: Instrument (REVISED Cream White Light Theme) */
+  --color-black: #0a0a0a;
+  --color-white: #f5f3ef;
+  --color-gray-dim: #6e675b;
+  --color-grain-opacity: 0.08;
+  --color-halation: rgba(232, 84, 26, 0.15);
+
+  /* Fonts */
+  --font-body: 'IBM Plex Mono', monospace;
+
+  /* Theme Colors */
+  --bg-primary:     #f5f3ef;      /* Cream background */
+  --bg-secondary:   #eae6df;      /* Card/panel surface */
+  --bg-tertiary:    #dfd9ce;      /* Hover state */
+
+  --text-primary:   #1a1814;      /* Near-black text */
+  --text-secondary: #6e675b;      /* Muted warm gray */
+  --text-dim:       #a09789;      /* ghost, disabled */
+
+  /* OD-11 component colors — used as fills, not accents */
+  --color-orange:   #e8541a;      /* Riddim orange — primary CTA, active */
+  --color-yellow:   #e8c84a;      /* OD-11 yellow block */
+  --color-red:      #c8281a;      /* OD-11 red block */
+  --color-blue:     #2040c8;      /* OD-11 blue block */
+  --color-green:    #1a5c3a;      /* Riddim forest green */
+  --color-cream:    #d4c9a8;      /* Riddim cream — borders, rules, tags */
+  --color-brown:    #6a3c1e;      /* OD-11 brown block — used sparingly */
+
+  --border:         #dfd9ce;
+  --border-strong:  #c8beae;      /* cream borders — visible against background */
+
+  /* Radii */
+  --radius-card: 0px !important;
+  --radius-media: 0px !important;
+  --radius-col: 0px !important;
+  --radius-pill: 0px !important;
+  --radius-sm: 0px !important;
+  --radius-ball: 0px !important;
+
+  /* Transitions Override */
+  --ease-spring: cubic-bezier(0.19, 1, 0.22, 1);
+  --duration-fast: 0.25s;
+  --duration-medium: 0.5s;
+  --duration-slow: 0.5s;
+
+  /* Gradient Overlay */
+  --overlay-gradient: none !important;
+}
+
+html.theme-brutalist {
+  /* Fonts */
+  --font-display: 'Barlow Condensed', 'Helvetica Neue', 'Arial Black', sans-serif;
+  --font-body: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+
+  /* Colors */
+  --bg-primary:     #f0ece4;      /* warm off-white, newsprint */
+  --bg-secondary:   #e8c84a;      /* amber/yellow — dominant panel fill */
+  --bg-tertiary:    #1a1a1a;      /* black panels, inverted sections */
+  --bg-panel:       #f7f4ee;      /* slightly lighter than base, card surface */
+
+  --text-primary:   #0f0f0f;      /* near-black */
+  --text-secondary: #4a4a4a;      /* mid gray */
+  --text-on-yellow: #0f0f0f;      /* black on amber panels */
+  --text-on-black:  #f0ece4;      /* off-white on dark panels */
+
+  --accent-orange:  #e8541a;      /* CTA dot, active state */
+  --accent-yellow:  #e8c84a;      /* panel fills, hover backgrounds */
+  --border:         #0f0f0f;      /* black borders — visible, structural */
+  --border-light:   #d4cfc6;      /* light rule on white panels */
+
+  /* Borders & Radii Override */
+  --border-strong:  var(--border);
+  --radius-card:    0px !important;
+  --radius-media:   0px !important;
+  --radius-col:     0px !important;
+  --radius-pill:    0px !important;
+  --radius-sm:      0px !important;
+  --radius-ball:    0px !important;
+
+  /* Spacing */
+  --gap-sm:         12px;
+  --gap-md:         24px;
+  --gap-lg:         48px;
+  --gap-xl:         80px;
+
+  /* Transitions Override (Fast, mechanical) */
+  --ease-spring:     cubic-bezier(0.19, 1, 0.22, 1);
+  --duration-fast:   0.2s;
+  --duration-medium: 0.4s;
+  --duration-slow:   0.4s;
+
+  /* SVG Noise */
+  --color-grain-opacity: 0.04;
+
+  /* Gradient Overlay */
+  --overlay-gradient: none !important;
+}
+
+html.theme-retro {
+  /* Fonts */
+  --font-display: 'JetBrains Mono', monospace;
+  --font-body: 'JetBrains Mono', monospace;
+
+  /* Theme Colors */
+  --bg-primary:     #e8e0cc;      /* warm cream, like old CRT screen surround */
+  --bg-secondary:   #6bb8c4;      /* muted teal — panel/window fill */
+  --bg-window:      #f0ebe0;      /* window interior, lighter cream */
+  --bg-dark:        #1a1a2e;      /* dark navy — inverted window, active panel */
+
+  --text-primary:   #1a1a1a;      /* near-black on cream */
+  --text-on-teal:   #0f2a30;      /* dark teal-black on teal panels */
+  --text-on-dark:   #c8e8cc;      /* phosphor green-white on dark panels */
+  --text-secondary: #6a6458;      /* muted warm brown-gray */
+
+  --accent-red:     #c8342a;      /* close button dot, error, active */
+  --accent-teal:    #6bb8c4;      /* panel fills */
+  --accent-phosphor:#7acc7a;      /* terminal green, used very sparingly */
+
+  --border:         #1a1a1a;      /* black window chrome border */
+  --border-teal:    #3a8894;      /* teal panel border */
+  --window-chrome:  #2a2a2a;      /* title bar background */
+
+  /* Spacing & Layout overrides */
+  --radius:         4px;          /* only direction with any radius */
+  --radius-card:    var(--radius) !important;
+  --radius-media:   var(--radius) !important;
+  --radius-col:     var(--radius) !important;
+  --radius-pill:    var(--radius) !important;
+  --radius-sm:      var(--radius) !important;
+  --radius-ball:    var(--radius) !important;
+
+  --gap-sm:         12px;
+  --gap-md:         24px;
+  --gap-lg:         56px;
+  --gap-xl:         100px;
+
+  /* Transitions Override - Instant */
+  --ease-spring:     none !important;
+  --duration-fast:   0s !important;
+  --duration-medium: 0s !important;
+  --duration-slow:   0s !important;
+
+  /* SVG Noise */
+  --color-grain-opacity: 0.05;
+
+  /* Gradient Overlay */
+  --overlay-gradient: none !important;
+}
+
+
+
+
+
